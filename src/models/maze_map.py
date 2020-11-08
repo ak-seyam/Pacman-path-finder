@@ -2,6 +2,7 @@ import copy
 from models.graph import Graph,Node
 from models.maze_items import Location, Map_el, Map_point, Direction, Path
 from typing import List
+import math
 
 class Maze_map:
 
@@ -189,6 +190,9 @@ class Maze_map:
 
         return maze
 
+    def calculate_distance(self, location_1: Location,location_2: Location):
+        return math.sqrt((location_2.x - location_1.x)**2 + (location_2.y - location_1.y)**2)
+        
 
     def point_in_top(self, location: Location) -> Map_point:
         if location.y == 0:
