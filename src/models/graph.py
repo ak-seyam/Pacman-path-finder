@@ -1,4 +1,4 @@
-from maze_map import Map_point
+from models.maze_items import Map_point
 
 class Node(object):
     def __init__(self, id: int, map_point: Map_point = (-1, -1)):

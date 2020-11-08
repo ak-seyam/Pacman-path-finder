@@ -1,26 +1,6 @@
-from dataclasses import dataclass
-from enum import Enum
 import copy
-from graph import Graph
-
-class Map_el(Enum):
-    WALL = '%'
-    PLAYER = 'P'
-    TRAGET = '.'
-    EMPTY = ' '
-
-
-@dataclass
-class Location:
-    x: int
-    y: int
-
-
-@dataclass
-class Map_point:
-    content: Map_el
-    location: Location
-
+from models.graph import Graph
+from models.maze_items import Location, Map_el, Map_point
 
 class Maze_map:
 
