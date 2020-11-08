@@ -84,6 +84,12 @@ class Graph(object):
         
         return adj_mat
 
+class GraphStructureError(Exception):
+    """
+        An exception raised for graphs with non correct structure for example
+        graphs with nodes but no edges
+    """
+    pass
 
 if __name__ == "__main__":
     # test
