@@ -58,7 +58,7 @@ class Graph(object):
         "from" nodes.
         Each section in the list will store a list
         of tuples that looks like this:
-        (To Node, Edge id)"""
+        (To Node Id, Edge id)"""
         
         adjc_list = [None]*(len(self.nodes)+1)
         for node in self.nodes:
