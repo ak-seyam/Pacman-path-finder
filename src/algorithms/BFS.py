@@ -18,6 +18,8 @@ def BFS(graph: Graph, starting_node_index, callback=lambda node: print(f"Node Id
         if node not in visited_nodes:
             visited_nodes.add(node)
             callback(graph.nodes[node])
-            for connection in adjacency_list[node]:
-                # add the to index to nodes queue
-                nodes_queue.append(connection[0])
+            connections = adjacency_list.get(node)
+            if connections:
+                for connection in connections:
+                    # add the to index to nodes queue
+                    nodes_queue.append(connection[0])

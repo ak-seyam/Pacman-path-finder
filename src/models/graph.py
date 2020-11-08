@@ -60,7 +60,8 @@ class Graph(object):
         of tuples that looks like this:
         (To Node Id, Edge id)"""
         
-        adjc_list = [None]*(len(self.nodes)+1)
+        # adjc_list = [None]*(len(self.nodes)+1)
+        adjc_list = {}
         for node in self.nodes:
             row = []
             for e in node.edges:
