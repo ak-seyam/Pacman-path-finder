@@ -38,8 +38,8 @@ class Location:
 
 @dataclass
 class Path:
-    start: Map_point
     start_direction: Direction
+    start_point: Map_point
     # end: Map_point
 
 @dataclass
