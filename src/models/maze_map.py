@@ -15,7 +15,8 @@ class Maze_map:
         self.traget = self.find(Map_el.TRAGET)
         self.graph = self.build_graph()
 
-    def load_map(self, path) -> Map_point:
+    def load_map(self, path) -> List[List[Map_point]]:
+        '''load map point and meta'''
         with open("Maze/tinySearch.txt") as maze_file:
             maze_map = maze_file.read()
             maze_map = maze_map.split("\n")
@@ -44,9 +45,9 @@ class Maze_map:
         # 5. contenue with next from @next_nodes at [2]
         return graph
 
-    
-    
-    def _sympol_to_map_point(self,maze_map):
+
+    def _sympol_to_map_point(self, maze_map: List[List[str]]):
+        ''' convert symbol to map point '''
         maze_map = copy.deepcopy(maze_map)
         for row_index, row in enumerate(maze_map):
             for col_index, symbol in enumerate(row):
@@ -137,7 +138,7 @@ class Maze_map:
         else:
             return self.get_point_by_location(Location(location.x-1, location.y))
 
-    def nighbors_mat(self, location: Location):
+    def nighbors_mat(self, location: Location) -> List[Map_point]:
         ''' array  of nighbors in order [top , right, bottom, left] '''
         return [self.point_in_top(location),
                 self.point_in_right(location),
