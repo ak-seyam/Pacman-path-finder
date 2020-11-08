@@ -1,6 +1,7 @@
 import copy
 from models.graph import Graph
-from models.maze_items import Location, Map_el, Map_point
+from models.maze_items import Location, Map_el, Map_point, Direction, Path
+from typing import List
 
 class Maze_map:
 
@@ -8,6 +9,8 @@ class Maze_map:
         self.layout = self.load_map(path)
         self.hight = len(self.layout)
         self.width = len(self.layout[0])
+        # find pathes for every point
+        self.layout = self._fill_pathes(self.layout)
         self.player = self.find(Map_el.PLAYER)
         self.traget = self.find(Map_el.TRAGET)
         self.graph = self.build_graph()
@@ -53,7 +56,18 @@ class Maze_map:
         
         return maze_map
     
-    def find(self, content : Map_el):
+    def _fill_pathes(self, maze_map: List[List[Map_point]], in_place=True):
+        if not in_place:
+            maze_map = copy.deepcopy(maze_map)
+
+        for row_index, row in enumerate(maze_map):
+            for col_index, p in enumerate(row):
+                p.available_pathes = self.available_pathes(p.location)
+                maze_map[row_index][col_index] = p
+
+        return maze_map
+
+    def find(self, content: Map_el):
         res = []
         for row in self.layout:
             for point in row:
@@ -130,28 +144,37 @@ class Maze_map:
                 self.point_in_bottom(location),
                 self.point_in_left(location)]
 
-    def is_intersection(self, location: Location) -> bool:
+    def available_pathes(self, location) -> List[Path]:
+        ''' find free pathes for location '''
         if self.get_point_by_location(location).content == Map_el.WALL:
-            return False
+            return []
         
-        available_pathes = 0
-        for point in self.nighbors_mat(location):
-            if point is not None and point.content !=Map_el.WALL:
-                available_pathes += 1
-        
-        return available_pathes >= 3
+        pathes = []
+        top, right, bottom, left = self.nighbors_mat(location)
 
+        if top and top.content != Map_el.WALL:  # top
+            pathes.append(Path(Direction.UP, top))
+
+        if right and right.content != Map_el.WALL: # right
+            pathes.append(Path(Direction.RIGHT, right))
+
+        if bottom and bottom.content != Map_el.WALL: # bottom
+            pathes.append(Path(Direction.DOWN, bottom))
+
+        if left and left.content != Map_el.WALL: # left
+            pathes.append(Path(Direction.LEFT, left))
+        
+        return pathes
+
+    def is_intersection(self, location: Location) -> bool:
+        return self.get_point_by_location(location).is_intersection()
+
+    def is_bidirectional(self, location: Location) -> bool:
+        return self.get_point_by_location(location).is_bidirectional()
 
     def is_end_point(self, location: Location) -> bool:
-        if self.get_point_by_location(location).content == Map_el.WALL:
-            return False
-            
-        blocked_pathes = 0
-        for point in self.nighbors_mat(location):
-            if point is None or point.content == Map_el.WALL:
-                blocked_pathes +=1
-        
-        return blocked_pathes >= 3
+        ''' depracted '''
+        return self.get_point_by_location(location).is_end_point()
 
     def is_trget(self, location) -> bool:
         return self.get_point_by_location(location).content == Map_el.TRAGET
