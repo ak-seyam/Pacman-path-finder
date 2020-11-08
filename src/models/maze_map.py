@@ -141,19 +141,27 @@ class Maze_map:
         maze_map = copy.deepcopy(maze_map)
         for row_index, row in enumerate(maze_map):
             for col_index, point in enumerate(row):
-                maze_map[row_index][col_index] = point.content.value
+                maze_map[row_index][col_index] = point.content.value+' '
 
         return maze_map
 
-    def _marked_nodes(self):
+    def _marked_intersection(self):
         maze = self._map_point_to_sympol(self.layout)
-        
         for row in self.layout:
             for point in row:
                 if self.is_intersection(point.location):
-                    maze[point.location.y][point.location.x] = '*'
-                if self.is_end_point(point.location):
-                    maze[point.location.y][point.location.x] = '^'
+                    maze[point.location.y][point.location.x] = '{:<2}'.format(
+                        self._get_node_by_location(point.location).id)
+        return maze
+
+
+    def _marked_nodes(self):
+        maze = self._map_point_to_sympol(self.layout)
+        for row in self.layout:
+            for point in row:
+                if self.is_node(point.location):
+                    maze[point.location.y][point.location.x] = '{:<2}'.format(
+                        self._get_node_by_location(point.location).id)
 
         return maze
 
@@ -171,7 +179,11 @@ class Maze_map:
             maze += ''.join(row)+'\n'
 
         # important points 
-        maze += 'marked map \n'
+        maze += 'marked intersection \n'
+        for row in self._marked_intersection():
+            maze += ''.join(row)+'\n'
+
+        maze += 'marked nodes \n'
         for row in self._marked_nodes():
             maze += ''.join(row)+'\n'
 
@@ -243,6 +255,9 @@ class Maze_map:
     def is_trget(self, location) -> bool:
         return self.get_point_by_location(location).content == Map_el.TRAGET
 
+    def node_map(self):
+        for node in self.graph.nodes:
+            yield (node.id, node.map_point.location)
 
     def is_node(self, location) -> bool:
         return self.get_point_by_location(location).is_node()
