@@ -1,5 +1,5 @@
 import copy
-from models.graph import Graph
+from models.graph import Graph,Node
 from models.maze_items import Location, Map_el, Map_point, Direction, Path
 from typing import List
 
@@ -11,9 +11,20 @@ class Maze_map:
         self.width = len(self.layout[0])
         # find pathes for every point
         self.layout = self._fill_pathes(self.layout)
-        self.player = self.find(Map_el.PLAYER)
+        self.player = self.find(Map_el.PLAYER)[0]
         self.traget = self.find(Map_el.TRAGET)
+        self._node_id = -1 # so first node_id is 0
+        self._edge_id = 999
         self.graph = self.build_graph()
+
+
+    def _next_node_id(self):
+        self._node_id += 1
+        return self._node_id
+
+    def _next_edge_id(self):
+        self._edge_id += 1
+        return self._edge_id
 
     def load_map(self, path) -> List[List[Map_point]]:
         '''load map point and meta'''
@@ -32,18 +43,55 @@ class Maze_map:
     
     def build_graph(self):
         graph = Graph()
-        counter_id = 0
         for row in self.layout:
             for point in row:
-                graph.insert_node(counter_id, point)
-
+                if point.is_node():
+                    graph.insert_node(self._next_node_id(), point)
+        
+        # update the graph with nodes 
+        # to use later with edges
+        self.graph = graph
         # TODO find edges
-        # 1. start from player postion 
-        # 2. use x-axis and y-axis to find @next_node
+        def recursive_track(from_direction: Direction, current_point: Map_point, last_node: Node):
+            if current_point.is_visited:
+                return
+            self._mark_visited(current_point)
+            
+            if current_point.is_node():
+                current_node = self._get_node_by_location(current_point.location)
+            
+            if current_point.is_end_point():
+                graph.insert_edge(self._next_edge_id(),
+                                  last_node.id, current_node.id)
+                return
+
+            for path in current_point.next_pathes(from_direction):
+                next_point = path.start_point
+
+                if current_point.is_node():
+                    #  create edge
+                    graph.insert_edge(self._next_edge_id(),
+                                      last_node.id, current_node.id)
+                    last_node = current_node
+
+                recursive_track(path.start_direction, next_point, last_node)
+
+        player_node = self._get_node_by_location(self.player.location)
+        for path in self.player.available_pathes:
+            recursive_track(path.start_direction,
+                            path.start_point, player_node)
+        
+        
         # 3. measure distance 
         # 4. add edge 
-        # 5. contenue with next from @next_nodes at [2]
+        
         return graph
+
+        
+    def _mark_visited(self, map_point: Map_point):
+        loc = map_point.location
+        map_point.is_visited = True
+        self.layout[loc.y][loc.x] = map_point
 
     def next_pathes(self, point: Map_point, from_direction: Direction) -> List[Map_point]:
         next_ = []
@@ -109,6 +157,13 @@ class Maze_map:
 
         return maze
 
+        
+    def _get_node_by_location(self, location: Location):
+        point = self.get_point_by_location(location)
+        for node in self.graph.nodes:
+            if node.map_point == point:
+                return node
+    
     def __str__(self):
 
         maze = 'original map \n'
@@ -183,8 +238,11 @@ class Maze_map:
         return self.get_point_by_location(location).is_bidirectional()
 
     def is_end_point(self, location: Location) -> bool:
-        ''' depracted '''
         return self.get_point_by_location(location).is_end_point()
 
     def is_trget(self, location) -> bool:
         return self.get_point_by_location(location).content == Map_el.TRAGET
+
+
+    def is_node(self, location) -> bool:
+        return self.get_point_by_location(location).is_node()
