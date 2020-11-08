@@ -25,7 +25,7 @@ class Graph(object):
         self.nodes.append(new_node)
     
 
-    def insert_edge(self, new_edge_id, node_from_id, node_to_id):
+    def insert_edge(self, new_edge_id, node_from_id, node_to_id, distance=-1):
         from_found = None
         to_found = None
         for node in self.nodes:
@@ -39,7 +39,7 @@ class Graph(object):
         if to_found == None:
             to_found = Node(node_to_id)
             self.nodes.append(to_found)
-        new_edge = Edge(new_edge_id, from_found, to_found)
+        new_edge = Edge(new_edge_id, from_found, to_found, distance)
         from_found.edges.append(new_edge)
         to_found.edges.append(new_edge)
         self.edges.append(new_edge)
