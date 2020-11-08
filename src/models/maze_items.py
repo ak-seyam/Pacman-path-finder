@@ -47,6 +47,7 @@ class Map_point:
     content: Map_el
     location: Location = Location(-1,-1)
     available_pathes: List[Path] = None
+    is_visited: bool = False
     def is_bidirectional(self):
         ''' test if point is in one way road '''
         return len(self.available_pathes) == 2 and self.content != Map_el.WALL
@@ -65,6 +66,13 @@ class Map_point:
     def is_end_point(self):
         return len(self.available_pathes) == 1 and self.content != Map_el.WALL
 
+    def is_node(self):
+        return self.is_end_point() or self.is_intersection() or self.content == Map_el.TRAGET or self.content == Map_el.PLAYER
+
+    def next_pathes(self , from_direction: Direction):
+        for path in self.available_pathes:
+            if path.start_direction != from_direction.opposite():
+                yield path
 
 if __name__ == "__main__":
     import doctest
