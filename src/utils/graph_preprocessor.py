@@ -9,7 +9,7 @@ def graph_algorithm(preprocessor=None):
         def wrapper(*args, **kwargs):
             graph = args[0]
             if len(graph.nodes) and not len(graph.edges):
-                raise GraphStructureError("The graph have unconnected nodes")
+                raise GraphStructureError("all nodes are not connected")
             if preprocessor :
                 graph = preprocessor(graph) 
             result = function(graph)
