@@ -45,6 +45,15 @@ class Maze_map:
         # 5. contenue with next from @next_nodes at [2]
         return graph
 
+    def next_pathes(self, point: Map_point, from_direction: Direction) -> List[Map_point]:
+        next_ = []
+        if point.is_end_point():
+            return next_
+        
+        for path in point.available_pathes:
+            if path.direction.opposite != from_direction:
+                next_.append(path)
+        return next_
 
     def _sympol_to_map_point(self, maze_map: List[List[str]]):
         ''' convert symbol to map point '''
