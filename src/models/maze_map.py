@@ -45,6 +45,8 @@ class Maze_map:
     def build_graph(self):
         graph = Graph()
         # TODO make adding nodes,edges optional
+        # NOTE we can save lots of computation by not adding nodes
+        # and use the _connected_nodes points in edge insertion
         for row in self.layout:
             for point in row:
                 if point.is_node():
@@ -53,15 +55,25 @@ class Maze_map:
         # update the graph with nodes 
         # to use later with edges
         self.graph = graph
-        #TODO add edges for all nodes
-        # for node in graph.nodes():
-        #     for other_node in node.next_nodes():
-        #         graph.insert_edge(self.edge_id,node.id,other_node.id)
-        
+        #TODO make sure edge note added twice for both direction
+        for node in graph.nodes:
+            for connected_node in self._connected_nodes(node):
+                graph.insert_edge(self._next_edge_id(),
+                                  connected_node.id, node.id)
         
         return graph
-
+    # NOTE why not use location as node id
+    def _connected_nodes(self, node: Node) -> List[Node]:    
+        nodes = []
+        available_pathes = node.map_point.available_pathes
+        if available_pathes:
+            for path in available_pathes:
+                n = self._get_node_by_location(path.next_node_point().location)
+                if n:
+                    nodes.append(n)    
         
+        return nodes
+    
     def _mark_visited(self, map_point: Map_point):
         loc = map_point.location
         map_point.is_visited = True
@@ -141,6 +153,8 @@ class Maze_map:
 
         
     def _get_node_by_location(self, location: Location):
+        # TODO may need better approach check note in build graph
+        
         point = self.get_point_by_location(location)
         for node in self.graph.nodes:
             if node.map_point == point:
