@@ -1,7 +1,7 @@
 from models.maze_items import Map_point
 
 class Node(object):
-    def __init__(self, id: int, map_point: Map_point = (-1, -1)):
+    def __init__(self, id: int, map_point: Map_point = None):
         self.id = id
         self.edges = []
         self.map_point = map_point
@@ -14,15 +14,26 @@ class Edge(object):
         self.node_to = node_to
         self.distance = distance
 
-
+    def other_node(self,node):
+        ''' return other node in edge
+        
+        example 
+        >>> g = Graph()
+        >>> e = g.insert_edge(101, 1, 3)
+        >>> n1 = g.get_node_by_id(1)
+        >>> e.other_node(n1).id
+        3
+        '''
+        return self.node_from if node == self.node_from else self.node_to
 class Graph(object):
     def __init__(self, nodes=[], edges=[]):
         self.nodes = nodes
         self.edges = edges
 
-    def insert_node(self, new_node_id, location: Map_point):
+    def insert_node(self, new_node_id, location: Map_point=None):
         new_node = Node(new_node_id, location)
         self.nodes.append(new_node)
+        return new_node
     
 
     def insert_edge(self, new_edge_id, node_from_id, node_to_id, distance=-1):
