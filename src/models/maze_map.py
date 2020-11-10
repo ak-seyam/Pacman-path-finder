@@ -29,7 +29,7 @@ class Maze_map:
 
     def load_map(self, path) -> List[List[Map_point]]:
         '''load map point and meta'''
-        with open("Maze/tinySearch.txt") as maze_file:
+        with open(path) as maze_file:
             maze_map = maze_file.read()
             maze_map = maze_map.split("\n")
             maze_map = [list(row) for row in maze_map]
