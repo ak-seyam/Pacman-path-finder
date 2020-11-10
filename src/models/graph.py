@@ -43,6 +43,15 @@ class Graph(object):
         from_found.edges.append(new_edge)
         to_found.edges.append(new_edge)
         self.edges.append(new_edge)
+    def get_node_by_id(self,node_id):
+        for node in self.nodes:
+            if node.id == node_id:
+                return node
+
+    def get_edge_by_id(self,edge_id):
+        for edge in self.edges:
+            if edge.id == edge_id:
+                return edge
 
     def get_edge_list(self):
         """Don't return a list of edge objects!
