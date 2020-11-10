@@ -44,6 +44,7 @@ class Maze_map:
     
     def build_graph(self):
         graph = Graph()
+        # TODO make adding nodes,edges optional
         for row in self.layout:
             for point in row:
                 if point.is_node():
@@ -52,39 +53,11 @@ class Maze_map:
         # update the graph with nodes 
         # to use later with edges
         self.graph = graph
-        # TODO find edges
-        def recursive_track(from_direction: Direction, current_point: Map_point, last_node: Node):
-            if current_point.is_visited:
-                return
-            self._mark_visited(current_point)
-            
-            if current_point.is_node():
-                current_node = self._get_node_by_location(current_point.location)
-            
-            if current_point.is_end_point():
-                graph.insert_edge(self._next_edge_id(),
-                                  last_node.id, current_node.id)
-                return
-
-            for path in current_point.next_pathes(from_direction):
-                next_point = path.start_point
-
-                if current_point.is_node():
-                    #  create edge
-                    graph.insert_edge(self._next_edge_id(),
-                                      last_node.id, current_node.id)
-                    last_node = current_node
-
-                recursive_track(path.start_direction, next_point, last_node)
-
-        player_node = self._get_node_by_location(self.player.location)
-        for path in self.player.available_pathes:
-            recursive_track(path.start_direction,
-                            path.start_point, player_node)
+        #TODO add edges for all nodes
+        # for node in graph.nodes():
+        #     for other_node in node.next_nodes():
+        #         graph.insert_edge(self.edge_id,node.id,other_node.id)
         
-        
-        # 3. measure distance 
-        # 4. add edge 
         
         return graph
 
