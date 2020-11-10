@@ -60,6 +60,8 @@ class Graph(object):
         from_found.edges.append(new_edge)
         to_found.edges.append(new_edge)
         self.edges.append(new_edge)
+        return new_edge
+
     def get_node_by_id(self,node_id):
         for node in self.nodes:
             if node.id == node_id:
