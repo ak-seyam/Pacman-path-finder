@@ -84,7 +84,7 @@ class Graph(object):
         of tuples that looks like this:
         (To Node, Edge id)"""
         
-        adjc_list = [None]*(len(self.nodes)+1)
+        adjc_list = [None]*(len(self.nodes))
         for node in self.nodes:
             row = []
             for e in node.edges:
@@ -101,7 +101,7 @@ class Graph(object):
         column numbers represent to nodes.
         Store the edge ids in each spot,
         and a 0 if no edge exists."""
-        n_nodes = len(self.nodes)+1
+        n_nodes = len(self.nodes)
         adj_mat = [[0]*n_nodes for i in range(n_nodes)]
         for e in self.edges:
             adj_mat[e.node_from.id][e.node_to.id] = e.id
