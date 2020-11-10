@@ -41,6 +41,15 @@ class Path:
     start_direction: Direction
     start_point: Map_point
     # end: Map_point
+    def next_node_point(self) -> Map_point:
+        point = self.start_point
+        if self.start_point.is_node():
+            return point
+        if self.start_point.is_end_point():
+            return None
+        if self.start_point.is_bidirectional():
+            next_path = self.start_point.next_pathes(self.start_direction).send(None)  # get next value from generator
+            return next_path.next_node_point()
 
 @dataclass
 class Map_point:
