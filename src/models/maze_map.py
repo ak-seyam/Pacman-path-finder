@@ -1,6 +1,6 @@
 import copy
-from models.graph import Graph,Node
-from models.maze_items import Location, Map_el, Map_point, Direction, Path
+from .graph import Graph,Node
+from .maze_items import Location, Map_el, Map_point, Direction, Path
 from typing import List
 import math
 

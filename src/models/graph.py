@@ -1,4 +1,4 @@
-from models.maze_items import Map_point
+from .maze_items import Map_point
 from typing import List
 class Node(object):
     def __init__(self, id: int, map_point: Map_point = None):

@@ -1,5 +1,4 @@
-from models.graph import Graph
-from models.maze_map import Maze_map
+from models import Graph, Maze_map
 
 
 
