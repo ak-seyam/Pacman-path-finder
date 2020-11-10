@@ -16,6 +16,7 @@ class Direction(Enum):
     RIGHT = 'r'
     DOWN = 'b'
     LEFT = 'l'
+
     def opposite(self):
         ''' return opposite direction
 
@@ -30,6 +31,7 @@ class Direction(Enum):
 
         return opposite
 
+
 @dataclass
 class Location:
     x: int
@@ -41,6 +43,7 @@ class Path:
     start_direction: Direction
     start_point: Map_point
     # end: Map_point
+
     def next_node_point(self) -> Map_point:
         point = self.start_point
         if self.start_point.is_node():
@@ -48,21 +51,25 @@ class Path:
         if self.start_point.is_end_point():
             return None
         if self.start_point.is_bidirectional():
-            next_path = self.start_point.next_pathes(self.start_direction).send(None)  # get next value from generator
+            next_path = self.start_point.next_pathes(self.start_direction).send(
+                None)  # get next value from generator
             return next_path.next_node_point()
+
 
 @dataclass
 class Map_point:
     content: Map_el
-    location: Location = Location(-1,-1)
+    location: Location = Location(-1, -1)
     available_pathes: List[Path] = None
     is_visited: bool = False
+
     def is_bidirectional(self):
         ''' test if point is in one way road '''
         return len(self.available_pathes) == 2 and self.content != Map_el.WALL
+
     def is_intersection(self):
         ''' if intersection
-        
+
         >>> m1 = Map_point(Map_el.EMPTY, available_pathes = [1,2])
         >>> m1.is_intersection()
         False
@@ -72,16 +79,18 @@ class Map_point:
         True
         '''
         return self.content != Map_el.WALL and len(self.available_pathes) >= 3
+
     def is_end_point(self):
-        return self.content != Map_el.WALL and len(self.available_pathes) == 1 
+        return self.content != Map_el.WALL and len(self.available_pathes) == 1
 
     def is_node(self):
         return self.is_intersection() or self.content == Map_el.TRAGET or self.content == Map_el.PLAYER
 
-    def next_pathes(self , from_direction: Direction):
+    def next_pathes(self, from_direction: Direction):
         for path in self.available_pathes:
             if path.start_direction != from_direction.opposite():
                 yield path
+
 
 if __name__ == "__main__":
     import doctest
