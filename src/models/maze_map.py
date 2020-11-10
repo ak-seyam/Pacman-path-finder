@@ -106,8 +106,9 @@ class Maze_map:
 
         for row_index, row in enumerate(maze_map):
             for col_index, p in enumerate(row):
-                p.available_pathes = self.available_pathes(p.location)
-                maze_map[row_index][col_index] = p
+                if p.content != Map_el.WALL:
+                    p.available_pathes = self.available_pathes(p.location)
+                    maze_map[row_index][col_index] = p
 
         return maze_map
 
