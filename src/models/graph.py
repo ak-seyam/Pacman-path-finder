@@ -1,5 +1,5 @@
 from models.maze_items import Map_point
-
+from typing import List
 class Node(object):
     def __init__(self, id: int, map_point: Map_point = None):
         self.id = id
@@ -65,15 +65,13 @@ class Graph(object):
                 return edge
 
     def get_edge_list(self):
-        """Don't return a list of edge objects!
-        Return a list of triples that looks like this:
+        """ Return a list of triples that looks like this:
         (Edge id, From Node id, To Node id)"""
         return [(e.id, e.node_from.id, e.node_to.id) for e in self.edges]
         
 
     def get_adjacency_list(self):
-        """Don't return any Node or Edge objects!
-        You'll return a list of lists.
+        """ return a list of lists.
         The indecies of the outer list represent
         "from" nodes.
         Each section in the list will store a list
