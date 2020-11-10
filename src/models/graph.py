@@ -7,6 +7,12 @@ class Node(object):
         self.map_point = map_point
 
 
+    def __str__(self):
+        if Map_point is not None:
+            return str(f"{self.id} @{self.map_point.location}" )
+        else :
+            return str(f"{self.id}")
+
 class Edge(object):
     def __init__(self, id:int, node_from:Node, node_to:Node, distance=-1):
         self.id = id
