@@ -30,13 +30,14 @@ BFS(g,0)
 print(maze_map)
 
 
-print(maze_map)
+# print(maze_map)
 # for i in maze_map.graph.get_adjacency_list():
 #     print(i)
 # for i in maze_map.node_map():
 #     print(i)
 
-def solve_dfs():
+
+def solve_dfs(maze_map):
     player_point = maze_map.player
     start_node_id = maze_map._get_node_by_location(player_point.location).id
 
@@ -44,4 +45,10 @@ def solve_dfs():
     for k in moving_map.keys():
         print(k, moving_map[k])
 
-solve_dfs()
+# DFS solution
+# for map_ in mazes:
+#     print(map_)
+#     # map_ = mazes[-1]
+#     maze_map = Maze_map(f'Maze/{map_}')
+#     print(maze_map)
+#     solve_dfs(maze_map)
