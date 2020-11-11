@@ -81,6 +81,9 @@ class Graph(object):
         return [(e.id, e.node_from.id, e.node_to.id) for e in self.edges]
 
     def get_adjacency_list(self):
+        return self.get_adjacency_dict().items()
+    
+    def get_adjacency_dict(self):
         """ return a list of lists.
         The indecies of the outer list represent
         "from" nodes.
