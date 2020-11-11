@@ -43,8 +43,9 @@ class Maze_map:
     def build_graph(self):
         graph = Graph()
         # TODO make adding nodes,edges optional
-        # NOTE we can save lots of computation by not adding nodes
+        # NOTE we can save lots of computation by not adding nodes at all
         # and use the _connected_nodes points in edge insertion
+        # NOTE seems there is no need biggiset maze load in no time
         for row in self.layout:
             for point in row:
                 if point.is_node():
@@ -67,9 +68,11 @@ class Maze_map:
         available_pathes = node.map_point.available_pathes
         if available_pathes:
             for path in available_pathes:
-                n = self._get_node_by_location(path.next_node_point().location)
-                if n:
-                    nodes.append(n)
+                next_point =  path.next_node_point()
+                if next_point:
+                    n = self._get_node_by_location(next_point.location)
+                    if n:
+                        nodes.append(n)
 
         return nodes
 
@@ -126,7 +129,8 @@ class Maze_map:
         Args: 
             maze_map List<Map_point> 
         '''
-        maze_map = copy.deepcopy(maze_map)
+        maze_map = [row.copy() for row in maze_map]
+        # maze_map = copy.deepcopy(maze_map)
         for row_index, row in enumerate(maze_map):
             for col_index, point in enumerate(row):
                 maze_map[row_index][col_index] = point.content.value+' '
