@@ -39,9 +39,9 @@ class Edge(object):
 
 
 class Graph(object):
-    def __init__(self, nodes=[], edges=[]):
-        self.nodes = nodes
-        self.edges = edges
+    def __init__(self):
+        self.nodes = []
+        self.edges = []
 
     def insert_node(self, new_node_id, location: Map_point = None):
         new_node = Node(new_node_id, location)
