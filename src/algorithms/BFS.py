@@ -31,6 +31,7 @@ def lazyBFS(starting_node_id, get_adjacent_nodes_ids,
         Do BFS but with lazy adjacency list loading, suitable for the unusual 
         adjacency list mechanism like the maze-graph converter or getting the
         adjacent list from an external source, for example getting them online
+        TODO add target nodes id that BFS stop when reach them
     """
     visited_nodes = set()
     nodes_queue = [starting_node_id]
