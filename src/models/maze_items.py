@@ -83,8 +83,12 @@ class Map_point:
     def is_end_point(self):
         return self.content != Map_el.WALL and len(self.available_pathes) == 1
 
+    def is_target(self):
+        return self.content == Map_el.TRAGET
+
     def is_node(self):
-        return self.is_intersection() or self.content == Map_el.TRAGET or self.content == Map_el.PLAYER
+        # TODO the player will move do we need to track the movment
+        return self.is_intersection() or self.is_target() or self.content == Map_el.PLAYER
 
     def next_pathes(self, from_direction: Direction):
         for path in self.available_pathes:

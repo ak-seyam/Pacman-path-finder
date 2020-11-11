@@ -1,5 +1,6 @@
 from models import Graph, Maze_map, Map_point, Map_el, Location
 from algorithms.BFS import BFS
+from algorithms.DFS import DFS
 
 
 mazes = [
@@ -29,7 +30,18 @@ BFS(g,0)
 print(maze_map)
 
 
+print(maze_map)
 # for i in maze_map.graph.get_adjacency_list():
 #     print(i)
 # for i in maze_map.node_map():
 #     print(i)
+
+def solve_dfs():
+    player_point = maze_map.player
+    start_node_id = maze_map._get_node_by_location(player_point.location).id
+
+    moving_map = DFS(maze_map.graph, start_node_id)
+    for k in moving_map.keys():
+        print(k, moving_map[k])
+
+solve_dfs()

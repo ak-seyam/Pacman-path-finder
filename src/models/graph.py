@@ -7,6 +7,9 @@ class Node(object):
         self.id = id
         self.edges = []
         self.map_point = map_point
+    
+    def is_target(self):
+        return self.map_point.is_target()
 
     def __str__(self):
         if Map_point is not None:
