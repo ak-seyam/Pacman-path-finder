@@ -10,68 +10,50 @@ class BFS_Solver():
         self.starting_point = start_point  # where i'm going to stop from the next target
         self.maze_map = maze_map
         self.graph = graph
-        self.visited_targets = []
+        self.visited_targets = {start_point}
+        self._res = {self.starting_point:[self.starting_point]}
+        self.res = {}
+
+    def find(self,l,value):
+        res = -1
+        try:
+            return l.index(value)
+        except :
+            return res            
+        
 
     # nodes_list is a list of nodes that consest of [parent,its children...]
     def solver(self, nodes_list):
+        # create pathes for every node by appending to to parents table if node is target add it to res
         for i in range(1, len(nodes_list)):
-            row = self.parents_table.get(nodes_list[i])
-            if not row:  # prepare the row in other words create the parents list
-                self.parents_table[nodes_list[i][0]] = []
-                row = self.parents_table[nodes_list[i][0]]
-            row.append(nodes_list[0])  # add the parent to children rows
-            # if maze_map.is_trget(self.graph.nodes[nodes_list[i][0]].map_point.location):
-            #     # if the node_list[0] is neither target nor self.previous_parent
-            #     # check for parent table [node_list[0]][0] till you fill
-            #     # that condition this send the res as the second param
-            #     started_from = nodes_list[0]
-            #     while not (maze_map.is_trget(self.graph.nodes[started_from].map_point.location) or started_from == self.previous_target):
-            #         started_from = self.parents_table[started_from][0]
-            #     print(self._build_path(nodes_list[i][0], started_from))
-        if self.maze_map.is_trget(self.graph.nodes[nodes_list[0]].map_point.location):
-            starting_point = self.starting_point
-            if len(self.visited_targets) :
-                starting_point = self.parents_table[nodes_list[0]][0]
-            print(self._build_path(nodes_list[0],starting_point))
-    def _build_path(self, target, started_from):
-        """
-            This should return the path from the current target to the self.previous target
-            and delete the parents accordingly when it finish it should change the previous target to
-            the current one and returns key value of the path
-        """
-        res_list = []
-        index = target
-        while index != started_from:
-            # move to the previous parent
-            nu_index = self.parents_table[index][0]
-            del self.parents_table[index][0]
-            res_list.insert(0, index)
-            index = nu_index
-        res_list.insert(0, started_from)
-        # self.previous_target = target # start from the new target
-        self.visited_targets.append(target)
-        return {target: res_list}
+            p = nodes_list[i][0]
+            # self._res[p] = list()
+            # if self.find(self._res[nodes_list[i][0]],[nodes_list[i][0]]) == -1:
+            
+            if self._res.get(p):
+                if p not in self._res[p]:
+                    self._res[p] = self._res[nodes_list[0]] + [p] 
+            else :
+                self._res[p] = self._res[nodes_list[0]] + [p] 
 
-
+    def get_result(self):
+        res = []
+        for target in self.maze_map.traget:
+            id = self.maze_map._get_node_by_location(target.location).id
+            res.append({id: self._res[id]})
+        return res
+    
 mazes = [
     'bigDots.txt', 'bigMaze.txt', 'mediumMaze.txt', 'mediumSearch.txt', 'openMaze.txt', 'smallSearch.txt', 'tinySearch.txt']
 
 
 maze_map = Maze_map(f'Maze/{mazes[-1]}')
 
-# maze_map = Maze_map('Maze/tinySearch.txt')
-# print(maze_map)
-g = Graph()
-g.insert_edge(0, 0, 1)
-# g.insert_edge(1,1,2)
-g.insert_edge(2, 2, 0)
 print("start from 0")
-sol = BFS_Solver(9, g, maze_map)
-BFS(g, 9, sol.solver)
-# print("start from 1")
-# BFS(g,1)
-# print("start from 2")
-# BFS(g,2)
+starting_point = maze_map._get_node_by_location(maze_map.player.location).id
+sol = BFS_Solver(starting_point, maze_map.graph, maze_map)
+BFS(maze_map.graph, starting_point, sol.solver)
+print('result is: ',sol.get_result())
 print(maze_map)
 
 
