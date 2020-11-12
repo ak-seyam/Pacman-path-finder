@@ -116,7 +116,7 @@ class Maze_map:
 
         return maze_map
 
-    def find(self, content: Map_el):
+    def find(self, content: Map_el) -> List[Map_point]:
         res = []
         for row in self.layout:
             for point in row:
@@ -133,7 +133,7 @@ class Maze_map:
         # maze_map = copy.deepcopy(maze_map)
         for row_index, row in enumerate(maze_map):
             for col_index, point in enumerate(row):
-                maze_map[row_index][col_index] = point.content.value+' '
+                maze_map[row_index][col_index] = point.content.value+'  '
 
         return maze_map
 
@@ -142,7 +142,7 @@ class Maze_map:
         for row in self.layout:
             for point in row:
                 if self.is_intersection(point.location):
-                    maze[point.location.y][point.location.x] = '{:<2}'.format(
+                    maze[point.location.y][point.location.x] = '{:<3}'.format(
                         self._get_node_by_location(point.location).id)
         return maze
 
@@ -151,7 +151,7 @@ class Maze_map:
         for row in self.layout:
             for point in row:
                 if self.is_node(point.location):
-                    maze[point.location.y][point.location.x] = '{:<2}'.format(
+                    maze[point.location.y][point.location.x] = '{:<3}'.format(
                         self._get_node_by_location(point.location).id)
 
         return maze
@@ -165,7 +165,7 @@ class Maze_map:
                 return node
 
     def __str__(self):
-
+        # TODO make the size equal to maxmimun number of node length
         maze = 'original map \n'
         for row in self._map_point_to_sympol(self.layout):
             maze += ''.join(row)+'\n'

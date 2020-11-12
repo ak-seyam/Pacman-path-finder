@@ -14,7 +14,7 @@ def graph_algorithm(preprocessor=None):
                 raise GraphStructureError("all nodes are not connected")
             if preprocessor :
                 graph = preprocessor(graph) 
-            result = function(graph,args[1],args[2])
+            result = function(graph,*args[1:])
             return result
         return wrapper
     return decorator
