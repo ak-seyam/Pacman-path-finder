@@ -64,9 +64,7 @@ print(maze_map)
 # for i in maze_map.node_map():
 #     print(i)
 
-<<<<<<< HEAD
 # Solver code
-=======
 
 def solve_dfs(maze_map):
     player_point = maze_map.player
@@ -83,4 +81,3 @@ def solve_dfs(maze_map):
 #     maze_map = Maze_map(f'Maze/{map_}')
 #     print(maze_map)
 #     solve_dfs(maze_map)
->>>>>>> node_converstion
