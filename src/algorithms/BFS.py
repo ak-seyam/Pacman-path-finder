@@ -4,7 +4,8 @@ from utils.graph_preprocessor import graph_algorithm
 
 # TODO: try to make a generic BFS
 @graph_algorithm()
-def BFS(graph: Graph, starting_node_id, callback=lambda node: print(f"Node Id = {node.id}")):
+# def BFS(graph: Graph, starting_node_id, callback=lambda node: print(f"Node Id = {node.id}")):
+def BFS(graph: Graph, starting_node_id, callback):
     """
     Do a BFS over a graph
     NOTE: callback is a function that gets called after each node being visited
@@ -17,8 +18,10 @@ def BFS(graph: Graph, starting_node_id, callback=lambda node: print(f"Node Id = 
         node = nodes_queue.pop(0)  # remove the first element, FIFO
         if node not in visited_nodes:
             visited_nodes.add(node)
-            callback(graph.nodes[node])
             connections = adjacency_dict.get(node)
+            nodes_list = [node]            
+            nodes_list.extend(connections)
+            callback(nodes_list)
             if connections:
                 for connection in connections:
                     # add the to index to nodes queue
