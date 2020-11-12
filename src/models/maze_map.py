@@ -37,6 +37,15 @@ class Maze_map:
         self.layout = self._sympol_to_map_point(maze_map)
         return self.layout
 
+    def connected_nodes(self,node):
+        nodes = []
+        for path in node.map_point.available_pathes:
+            node_point = path.next_node_point()
+            if node_point:
+                nodes.append(self._get_node_by_location(node_point.location))
+        return nodes
+
+
     def get_point_by_location(self, location: Location) -> Map_point:
         return self.layout[location.y][location.x]
 
