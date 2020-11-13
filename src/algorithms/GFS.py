@@ -18,7 +18,7 @@ def _GFS(graph: Graph, starting_node_id, target_id, callback=lambda node: print(
     _adjacency_dict = graph.get_adjacency_dict()
     visited_nodes = list()
     next = starting_node_id
-    backtrack_index = -2
+    backtrack_index = -1
     while next != target_id :
         children = list()
         if next!=None : # if it's not stuck
@@ -26,8 +26,8 @@ def _GFS(graph: Graph, starting_node_id, target_id, callback=lambda node: print(
             visited_nodes.append(next)
             # print('adj_dict', _adjacency_dict)
             children = [x[0] for x in _adjacency_dict[next]]
-        else :
-            backtrack_index -= 1
+        else : # if it is stuck 
+            backtrack_index -= 1 # get the children of the previous node aka backtrack
             children = [x[0] for x in _adjacency_dict[visited_nodes[backtrack_index]]] # get the children of the previously visited nodes
         # print('children', children)
         next = get_the_closet_to_target_child(graph,children,target_id, visited_nodes)
