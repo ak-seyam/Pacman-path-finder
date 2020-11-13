@@ -9,6 +9,8 @@ def get_closest_target(current_position_id: int, maze_map:Maze_map) -> int:
     minimum_distance = float('inf')
     current_node = maze_map.graph.nodes[current_position_id]
     for target in targets :
-        if target.heuristics(current_node) < minimum_distance :
+        distance = target.heuristics(current_node)
+        if distance < minimum_distance :
             closet_target = target.id
+            minimum_distance = distance
     return closet_target
