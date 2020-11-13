@@ -1,6 +1,7 @@
 from models import Graph, Maze_map, Map_point, Map_el, Location
 from algorithms.BFS import BFS
 from algorithms.DFS import DFS
+from algorithms.GFS import GFS
 
 
 mazes = [
