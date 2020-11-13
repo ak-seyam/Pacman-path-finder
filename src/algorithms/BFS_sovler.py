@@ -30,18 +30,22 @@ class BFS_Solver():
         return self._res
 
     def get_result(self):
-        imm_res = {}
+        targets_table = {}
         for id in self._res:
             if self.graph.nodes[id].is_target():
-                imm_res[id] = self._res[id]
+                targets_table[id] = self._res[id]
         prev_key = None
-        for key in imm_res :
+        for key in targets_table :
             if prev_key == None:
                 prev_key = key
             else:
-                for parent_index_in_child in range(len(imm_res[key])-2,-1,-1):
-                    if imm_res[key][parent_index_in_child] in imm_res[prev_key] :
-                        imm_res[key] = imm_res[key][parent_index_in_child:]
+                for ancestor_index_c_list in range(len(self._res[key])-2,-1,-1):
+                    ancestor_index = self._res[key][ancestor_index_c_list]
+                    if ancestor_index in self._res[prev_key] :
+                        ancestor_index_p = self._res[prev_key].index(ancestor_index)
+                        prev_list_portion = self._res[prev_key][ancestor_index_p+1:]
+                        prev_list_portion.reverse()
+                        targets_table[key] = prev_list_portion + self._res[key][ancestor_index_c_list:]
                         break
             prev_key = key
-        return imm_res
+        return targets_table
