@@ -16,20 +16,28 @@ def GFS(graph: Graph, starting_node_id, maze_map: Maze_map ,callback=lambda node
 
 def _GFS(graph: Graph, starting_node_id, target_id, callback=lambda node: print(f"Node Id = {node.id}")):
     _adjacency_dict = graph.get_adjacency_dict()
-    visited_nodes = set()
+    visited_nodes = list()
     next = starting_node_id
+    backtrack_index = -2
     while next != target_id :
-        callback(graph.nodes[next])
-        children = [x[0] for x in _adjacency_dict[next]]
+        children = list()
+        if next!=None : # if it's not stuck
+            callback(graph.nodes[next])
+            visited_nodes.append(next)
+            # print('adj_dict', _adjacency_dict)
+            children = [x[0] for x in _adjacency_dict[next]]
+        else :
+            backtrack_index -= 1
+            children = [x[0] for x in _adjacency_dict[visited_nodes[backtrack_index]]] # get the children of the previously visited nodes
+        # print('children', children)
         next = get_the_closet_to_target_child(graph,children,target_id, visited_nodes)
-        visited_nodes.add(next)
     callback(graph.nodes[target_id])
         
 def get_the_closet_to_target_child(graph, children_ids, target_id, exce):
     children_nodes = [graph.nodes[id] for id in children_ids]
-    minimum_child = children_ids[0]
-    minimum_child_distance = children_nodes[0].heuristics(graph.nodes[target_id])
-    for index in range(1,len(children_ids)) :
+    minimum_child = None
+    minimum_child_distance = float('inf')
+    for index in range(len(children_ids)) :
         distance = children_nodes[index].heuristics(graph.nodes[target_id]) 
         if  distance < minimum_child_distance and children_ids[index] not in exce:
             minimum_child = children_ids[index]

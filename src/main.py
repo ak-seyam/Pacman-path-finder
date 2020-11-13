@@ -14,9 +14,9 @@ mazes = [
 ,'tinySearch.txt']
 
 
-# maze_map = Maze_map(f'Maze/{mazes[-1]}')
+maze_map = Maze_map(f'Maze/{mazes[-1]}')
 
-maze_map = Maze_map('Maze/tinySearch.txt')
+# maze_map = Maze_map('Maze/tinySearch.txt')
 # print(maze_map)
 
 # BFS(g,9)
