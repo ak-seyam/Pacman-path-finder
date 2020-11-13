@@ -13,7 +13,6 @@ def GFS(graph: Graph, starting_node_id, maze_map: Maze_map ,callback=lambda node
 
 def _GFS(graph: Graph, starting_node_id, target_id, callback=lambda node: print(f"Node Id = {node.id}")):
     _adjacency_dict = graph.get_adjacency_dict()
-    path = [starting_node_id]
     visited_nodes = set()
     next = starting_node_id
     while next != target_id :
@@ -21,6 +20,7 @@ def _GFS(graph: Graph, starting_node_id, target_id, callback=lambda node: print(
         children = [x[0] for x in _adjacency_dict[next]]
         next = get_the_closet_to_target_child(graph,children,target_id, visited_nodes)
         visited_nodes.add(next)
+
         
 def get_the_closet_to_target_child(graph, children_ids, target_id, exce):
     children_nodes = [graph.nodes[id] for id in children_ids]
