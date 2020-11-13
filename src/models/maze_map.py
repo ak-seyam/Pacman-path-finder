@@ -58,7 +58,9 @@ class Maze_map:
         for row in self.layout:
             for point in row:
                 if point.is_node():
-                    graph.insert_node(self._next_node_id(), point)
+                    n = graph.insert_node(self._next_node_id(), point)
+                    
+                    self.layout[point.location.y][point.location.x].node_id = n.id
 
         # update the graph with nodes
         # to use later with edges
