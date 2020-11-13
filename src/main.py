@@ -8,7 +8,7 @@ mazes = [
     'bigDots.txt', 'bigMaze.txt', 'mediumMaze.txt', 'mediumSearch.txt', 'openMaze.txt', 'smallSearch.txt', 'tinySearch.txt']
 
 
-maze_map = Maze_map(f'Maze/{mazes[-1]}')
+maze_map = Maze_map(f'Maze/{mazes[4]}')
 
 print("start from 0")
 starting_point = maze_map._get_node_by_location(maze_map.player.location).id
