@@ -30,8 +30,18 @@ class BFS_Solver():
         return self._res
 
     def get_result(self):
-        res = []
-        for target in self.maze_map.traget:
-            id = self.maze_map._get_node_by_location(target.location).id
-            res.append({id: self._res[id]})
-        return res
+        imm_res = {}
+        for id in self._res:
+            if self.graph.nodes[id].is_target():
+                imm_res[id] = self._res[id]
+        prev_key = None
+        for key in imm_res :
+            if prev_key == None:
+                prev_key = key
+            else:
+                for parent_index_in_child in range(len(imm_res[key])-2,-1,-1):
+                    if imm_res[key][parent_index_in_child] in imm_res[prev_key] :
+                        imm_res[key] = imm_res[key][parent_index_in_child:]
+                        break
+            prev_key = key
+        return imm_res
