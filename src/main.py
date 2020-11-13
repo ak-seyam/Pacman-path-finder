@@ -2,7 +2,7 @@ from models import Graph, Maze_map, Map_point, Map_el, Location
 from algorithms.BFS import BFS
 from algorithms.DFS import DFS
 from algorithms.GFS import GFS
-
+from algorithms.GFS_Solver import GFS_Solver
 
 mazes = [
  'bigDots.txt'
@@ -14,13 +14,16 @@ mazes = [
 ,'tinySearch.txt']
 
 
-maze_map = Maze_map(f'Maze/{mazes[-1]}')
+maze_map = Maze_map(f'Maze/{mazes[1]}')
 
 # maze_map = Maze_map('Maze/tinySearch.txt')
 # print(maze_map)
 
 # BFS(g,9)
-GFS(maze_map.graph,maze_map.get_node_by_map_point(maze_map.player).id,maze_map)
+starting_point = maze_map.get_node_by_map_point(maze_map.player).id
+sol = GFS_Solver(starting_point)
+GFS(maze_map.graph,starting_point,maze_map, sol.solve)
+print(sol.get_path())
 # print("start from 1")
 # BFS(g,1)
 # print("start from 2")

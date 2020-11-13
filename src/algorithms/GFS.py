@@ -12,11 +12,11 @@ def GFS(graph: Graph, starting_node_id, maze_map: Maze_map ,callback=lambda node
     prev_target_id = starting_node_id
     for _ in range(len(targets)):
         target_id = get_closest_target(prev_target_id, maze_map)
-        _GFS(graph,prev_target_id,target_id)
+        _GFS(graph,prev_target_id,target_id, callback)
         prev_target_id=target_id
     clear_visited_targets()    
 
-def _GFS(graph: Graph, starting_node_id, target_id, callback=lambda node: print(f"Node Id = {node.id}")):
+def _GFS(graph: Graph, starting_node_id, target_id, callback):
     _adjacency_dict = graph.get_adjacency_dict()
     visited_nodes = list()
     next = starting_node_id
