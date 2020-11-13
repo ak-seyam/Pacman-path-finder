@@ -12,8 +12,6 @@ def GFS(graph: Graph, starting_node_id, maze_map: Maze_map ,callback=lambda node
     prev_target_id = starting_node_id
     for _ in range(len(targets)):
         target_id = get_closest_target(prev_target_id, maze_map)
-        print('current target = ',target_id)
-        # target_id = maze_map.get_node_by_map_point(target).id
         _GFS(graph,prev_target_id,target_id)
         prev_target_id=target_id
     clear_visited_targets()    

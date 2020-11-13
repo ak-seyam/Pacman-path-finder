@@ -7,8 +7,6 @@ def get_closest_target(current_position_id: int, maze_map:Maze_map) -> int:
         Or return None if all nodes are visited
     """
     if len(_visited_targets) == len(maze_map.traget) : 
-        print('visited targets length', len(_visited_targets),'\ntargets length',len(maze_map.traget))
-        print('visited targets', _visited_targets)
         return None
 
     targets = [maze_map.get_node_by_map_point(target) for target in maze_map.traget]
