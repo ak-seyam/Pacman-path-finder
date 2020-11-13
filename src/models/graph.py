@@ -20,7 +20,7 @@ class Node(object):
     def heuristics(self, node):
         x1,y1 = self.map_point.location.x,self.map_point.location.y
         x2,y2 = node.map_point.location.x, node.map_point.location.y
-        return abs((x2-x1)+(y2-y1))
+        return abs(x2-x1)+abs(y2-y1)
          
 class Edge(object):
     def __init__(self, id: int, node_from: Node, node_to: Node, distance=-1):
