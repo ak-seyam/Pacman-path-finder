@@ -61,7 +61,7 @@ class Map_point:
     content: Map_el
     location: Location = Location(-1, -1)
     available_pathes: List[Path] = None
-    is_visited: bool = False
+    node_id: int = None
 
     def is_bidirectional(self):
         ''' test if point is in one way road '''
