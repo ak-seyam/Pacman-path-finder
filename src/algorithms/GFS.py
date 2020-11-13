@@ -2,7 +2,7 @@ from models.graph import Graph
 from utils.graph_preprocessor import graph_algorithm
 from algorithms.BFS import lazyBFS
 from models.maze_map import Maze_map
-from utils.closet_target import get_closest_target
+from utils.closet_target import get_closest_target, clear_visited_targets
 
 _adjacency_dict = {}
 
@@ -10,11 +10,13 @@ _adjacency_dict = {}
 def GFS(graph: Graph, starting_node_id, maze_map: Maze_map ,callback=lambda node: print(f"Node Id = {node.id}")):
     targets = maze_map.traget
     prev_target_id = starting_node_id
-    for i in range(len(targets)):
+    for _ in range(len(targets)):
         target_id = get_closest_target(prev_target_id, maze_map)
+        print('current target = ',target_id)
         # target_id = maze_map.get_node_by_map_point(target).id
         _GFS(graph,prev_target_id,target_id)
         prev_target_id=target_id
+    clear_visited_targets()    
 
 def _GFS(graph: Graph, starting_node_id, target_id, callback=lambda node: print(f"Node Id = {node.id}")):
     _adjacency_dict = graph.get_adjacency_dict()
