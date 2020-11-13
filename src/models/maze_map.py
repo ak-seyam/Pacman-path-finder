@@ -167,6 +167,9 @@ class Maze_map:
 
         return maze
 
+    def get_node_by_map_point(self, map_point):
+        return self._get_node_by_location(map_point.location)
+
     def _get_node_by_location(self, location: Location):
         # TODO may need better approach check note in build graph
 
