@@ -11,6 +11,10 @@ class Node(object):
     def is_target(self):
         return self.map_point.is_target()
 
+    def connected_nodes(self):
+        for edge in self.edges:
+            if edge.node_to != self:
+                yield edge.node_to
     def __str__(self):
         if Map_point is not None:
             return str(f"{self.id} @{self.map_point.location}")
