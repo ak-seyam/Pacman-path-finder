@@ -37,6 +37,19 @@ class Maze_map:
         self.layout = self._sympol_to_map_point(maze_map)
         return self.layout
 
+    def points_dict(self):
+        dict_points = {}
+        for i,row in enumerate(self.layout):
+            dict_points[i] = row
+            
+        return dict_points
+
+    def all_points(self):
+        all_points = []
+        for row in self.layout:
+            all_points = all_points+row
+        return all_points
+
     def connected_nodes(self,node):
         nodes = []
         for path in node.map_point.available_pathes:
@@ -174,9 +187,7 @@ class Maze_map:
         # TODO may need better approach check note in build graph
 
         point = self.get_point_by_location(location)
-        for node in self.graph.nodes:
-            if node.map_point == point:
-                return node
+        return self.graph.get_node_by_id(point.node_id)                
 
     def __str__(self):
         # TODO make the size equal to maxmimun number of node length
