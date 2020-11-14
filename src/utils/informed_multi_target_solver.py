@@ -2,7 +2,7 @@ from utils.closet_target import get_closest_target, clear_visited_targets
 from models.graph import Graph
 from models.maze_map import Maze_map
 
-def multi_target_solver(algorithm, graph: Graph, \
+def informed_multi_target_solver(algorithm, graph: Graph, \
                         starting_node_id, \
                         maze_map: Maze_map, \
                         callback, \

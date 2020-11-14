@@ -4,7 +4,7 @@ from algorithms.DFS import DFS
 from algorithms.GFS import GFS
 from algorithms.GFS_Solver import GFS_Solver
 from algorithms.BFS_sovler import BFS_Solver
-from utils.multi_target_solver import multi_target_solver
+from utils.informed_multi_target_solver import informed_multi_target_solver
 
 
 mazes = [
@@ -17,7 +17,7 @@ starting_point = maze_map.get_node_by_map_point(maze_map.player).id
 
 #GFS solver
 sol = GFS_Solver(starting_point)
-multi_target_solver(GFS,maze_map.graph,starting_point,maze_map, sol.solve, sol.steps_counter)
+informed_multi_target_solver(GFS,maze_map.graph,starting_point,maze_map, sol.solve, sol.steps_counter)
 print('result path',sol.get_path())
 print('result expansion',sol.expansion)
 print('#steps: ',sol.steps)
