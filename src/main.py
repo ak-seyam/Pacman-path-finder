@@ -3,15 +3,11 @@ from algorithms.BFS import BFS
 from algorithms.DFS import DFS
 from algorithms.GFS import GFS
 from algorithms.GFS_Solver import GFS_Solver
+from algorithms.BFS_sovler import BFS_Solver
+
 
 mazes = [
- 'bigDots.txt'
-,'bigMaze.txt'
-,'mediumMaze.txt'
-,'mediumSearch.txt'
-,'openMaze.txt'
-,'smallSearch.txt'
-,'tinySearch.txt']
+    'bigDots.txt', 'bigMaze.txt', 'mediumMaze.txt', 'mediumSearch.txt', 'openMaze.txt', 'smallSearch.txt', 'tinySearch.txt']
 
 
 maze_map = Maze_map(f'Maze/{mazes[-1]}')
@@ -28,6 +24,11 @@ print(sol.get_path())
 # BFS(g,1)
 # print("start from 2")
 # BFS(g,2)
+print("start from 0")
+starting_point = maze_map._get_node_by_location(maze_map.player.location).id
+sol = BFS_Solver(starting_point, maze_map.graph, maze_map)
+BFS(maze_map.graph, starting_point, sol.solver)
+print('result is: ',sol.get_result())
 print(maze_map)
 
 
@@ -37,6 +38,7 @@ print(maze_map)
 # for i in maze_map.node_map():
 #     print(i)
 
+# Solver code
 
 def solve_dfs(maze_map):
     player_point = maze_map.player
