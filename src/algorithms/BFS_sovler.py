@@ -7,13 +7,14 @@ class BFS_Solver():
         self.starting_point = start_point  # where i'm going to stop from the next target
         self.maze_map = maze_map
         self.graph = graph
-        self.visited_targets = {start_point}
         self._res = {self.starting_point:[self.starting_point]}
         self.res = {}
+        self.expansion = []
 
     # nodes_list is a list of nodes that consest of [parent,its children...]
     def solver(self, nodes_list):
         # create pathes for every node by appending to to parents table if node is target add it to res
+        self.expansion.append(nodes_list[0])
         self._prepare_res(nodes_list)
 
     def _prepare_res(self, nodes_list):

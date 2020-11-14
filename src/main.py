@@ -8,13 +8,14 @@ mazes = [
     'bigDots.txt', 'bigMaze.txt', 'mediumMaze.txt', 'mediumSearch.txt', 'openMaze.txt', 'smallSearch.txt', 'tinySearch.txt']
 
 
-maze_map = Maze_map(f'Maze/{mazes[4]}')
+maze_map = Maze_map(f'Maze/{mazes[-1]}')
 
 print("start from 0")
 starting_point = maze_map._get_node_by_location(maze_map.player.location).id
 sol = BFS_Solver(starting_point, maze_map.graph, maze_map)
 BFS(maze_map.graph, starting_point, sol.solver)
 print('result is: ',sol.get_result())
+print('expansion is:', sol.expansion)
 print(maze_map)
 
 
