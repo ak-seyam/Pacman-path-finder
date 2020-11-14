@@ -174,9 +174,7 @@ class Maze_map:
         # TODO may need better approach check note in build graph
 
         point = self.get_point_by_location(location)
-        for node in self.graph.nodes:
-            if node.map_point == point:
-                return node
+        return self.graph.get_node_by_id(point.node_id)                
 
     def __str__(self):
         # TODO make the size equal to maxmimun number of node length
