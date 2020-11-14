@@ -1,6 +1,6 @@
 // import { wall_img, player_img, space_img, box_img } from "./assets_loader.js";
-var width = 480;
-var height = 360;
+var width = 2080;
+var height = 1080;
 
 var canvas_back = document.createElement("canvas");
 canvas_back.setAttribute("width", width);
