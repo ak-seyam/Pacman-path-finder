@@ -1,4 +1,5 @@
 from models import Maze_map
+from algorithms.A_star import path_to_distance
 
 class BFS_Solver():
     """get the parent by reversing the adjacency list"""
@@ -10,7 +11,7 @@ class BFS_Solver():
         self._res = {self.starting_point:[self.starting_point]}
         self.res = {}
         self.steps = 0
-        self.expansion = []
+        self.expansion = [] 
 
     # nodes_list is a list of nodes that consest of [parent,its children...]
     def solver(self, nodes_list):
@@ -32,12 +33,11 @@ class BFS_Solver():
         return self._res
 
     def get_result(self):
-        targets_table = {}
         for id in self._res:
             if self.graph.nodes[id].is_target():
-                targets_table[id] = self._res[id]
+                self.res[id] = self._res[id]
         prev_key = None
-        for key in targets_table :
+        for key in self.res :
             if prev_key == None:
                 prev_key = key
             else:
@@ -47,10 +47,18 @@ class BFS_Solver():
                         ancestor_index_p = self._res[prev_key].index(ancestor_index)
                         prev_list_portion = self._res[prev_key][ancestor_index_p+1:]
                         prev_list_portion.reverse()
-                        targets_table[key] = prev_list_portion + self._res[key][ancestor_index_c_list:]
+                        self.res[key] = prev_list_portion + self._res[key][ancestor_index_c_list:]
                         break
             prev_key = key
-        return targets_table
+        return self.res
 
     def steps_counter(self):
         self.steps += 1
+    
+    def total_cost(self):
+        distance = 0
+        for key in self.res:
+            imm_nodes = [self.graph.nodes[id] for id in self.res[key]]
+            distance += path_to_distance(imm_nodes)       
+        return distance
+     
