@@ -12,12 +12,22 @@ mazes = [
 
 maze_map = Maze_map(f'Maze/{mazes[-1]}')
 
+<<<<<<< HEAD
 #GFS solver
 # starting_point = maze_map.get_node_by_map_point(maze_map.player).id
 # sol = GFS_Solver(starting_point)
 # GFS(maze_map.graph,starting_point,maze_map, sol.solve)
 # print('result path',sol.get_path())
 # print('result expansion',sol.expansion)
+=======
+print("start from 0")
+starting_point = maze_map._get_node_by_location(maze_map.player.location).id
+sol = BFS_Solver(starting_point, maze_map.graph, maze_map)
+BFS(maze_map.graph, starting_point, sol.solver)
+print('result is: ',sol.get_result())
+print('expansion is:', sol.expansion)
+print(maze_map)
+>>>>>>> BFS
 
 
 # BFS solution
