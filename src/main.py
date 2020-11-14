@@ -4,27 +4,32 @@ from algorithms.DFS import DFS
 from algorithms.GFS import GFS
 from algorithms.GFS_Solver import GFS_Solver
 from algorithms.BFS_sovler import BFS_Solver
+from utils.informed_multi_target_solver import informed_multi_target_solver
 
 
 mazes = [
     'bigDots.txt', 'bigMaze.txt', 'mediumMaze.txt', 'mediumSearch.txt', 'openMaze.txt', 'smallSearch.txt', 'tinySearch.txt']
 
 
-maze_map = Maze_map(f'Maze/{mazes[-1]}')
+maze_map = Maze_map(f'Maze/{mazes[4]}')
+
+starting_point = maze_map.get_node_by_map_point(maze_map.player).id
 
 #GFS solver
-# starting_point = maze_map.get_node_by_map_point(maze_map.player).id
-# sol = GFS_Solver(starting_point)
-# GFS(maze_map.graph,starting_point,maze_map, sol.solve)
-# print(sol.get_path())
+sol = GFS_Solver(starting_point)
+informed_multi_target_solver(GFS,maze_map.graph,starting_point,maze_map, sol.solve, sol.steps_counter)
+print('result path',sol.get_path())
+print('result expansion',sol.expansion)
+print('#steps: ',sol.steps)
 
 
-# BFS soluation
-# print("start from 0")
-# starting_point = maze_map._get_node_by_location(maze_map.player.location).id
+# BFS solution
 # sol = BFS_Solver(starting_point, maze_map.graph, maze_map)
-# BFS(maze_map.graph, starting_point, sol.solver)
+# BFS(maze_map.graph, starting_point, sol.solver, sol.steps_counter)
 # print('result is: ',sol.get_result())
+# print('expansion is: ',sol.expansion)
+# print('#steps: ',sol.steps)
+
 # print(maze_map)
 
 
