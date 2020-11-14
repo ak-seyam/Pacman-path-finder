@@ -53,7 +53,7 @@ class Maze_map:
     def connected_nodes(self,node):
         nodes = []
         for path in node.map_point.available_pathes:
-            node_point = path.next_node_point()
+            node_point = path.next_node_point()[0]
             if node_point:
                 nodes.append(self._get_node_by_location(node_point.location))
         return nodes
@@ -80,26 +80,28 @@ class Maze_map:
         self.graph = graph
         # TODO make sure edge note added twice for both direction
         for node in graph.nodes:
-            for connected_node in self._connected_nodes(node):
+            connect_node_costs = self._connected_nodes(node)
+            for connected_node in connect_node_costs.keys():
                 graph.insert_edge(self._next_edge_id(),
-                                  connected_node.id, node.id)
+                                  connected_node.id, node.id,
+                                   connect_node_costs[connected_node])
 
         return graph
     # NOTE why not use location as node id
 
-    def _connected_nodes(self, node: Node) -> List[Node]:
-        nodes = []
+    def _connected_nodes(self, node: Node):
+        nodes_cost = {}
         available_pathes = node.map_point.available_pathes
         if available_pathes:
             for path in available_pathes:
-                next_point =  path.next_node_point()
+                next_point,cost =  path.next_node_point()
                 if next_point:
                     n = self._get_node_by_location(next_point.location)
+                    # cost_from
                     if n:
-                        nodes.append(n)
+                        nodes_cost[n] = cost
 
-        return nodes
-
+        return nodes_cost
     def _mark_visited(self, map_point: Map_point):
         loc = map_point.location
         map_point.is_visited = True
