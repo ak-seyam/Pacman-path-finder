@@ -6,7 +6,7 @@ class GFS_Solver():
         self._path = {}
         self._temp_list = []
         self.expansion = [starting_point]
-
+        self.steps = 0
     def solve(self, node: Node):
         id = node.id
         if self.expansion[-1] != id:
@@ -20,3 +20,6 @@ class GFS_Solver():
 
     def get_path(self):
         return self._path
+
+    def steps_counter(self):
+        self.steps += 1

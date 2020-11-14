@@ -9,6 +9,7 @@ class BFS_Solver():
         self.graph = graph
         self._res = {self.starting_point:[self.starting_point]}
         self.res = {}
+        self.steps = 0
         self.expansion = []
 
     # nodes_list is a list of nodes that consest of [parent,its children...]
@@ -50,3 +51,6 @@ class BFS_Solver():
                         break
             prev_key = key
         return targets_table
+
+    def steps_counter(self):
+        self.steps += 1
