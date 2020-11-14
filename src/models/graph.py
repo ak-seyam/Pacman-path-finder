@@ -22,6 +22,13 @@ class Node(object):
         x2,y2 = node.map_point.location.x, node.map_point.location.y
         return abs(x2-x1)+abs(y2-y1)
          
+    def distance(self, node):
+        if node == self:
+            return 0
+        for edge in self.edges:
+            if edge.node_to == node:
+                return edge.distance
+
 class Edge(object):
     def __init__(self, id: int, node_from: Node, node_to: Node, distance=-1):
         self.id = id
