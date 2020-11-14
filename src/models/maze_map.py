@@ -37,6 +37,19 @@ class Maze_map:
         self.layout = self._sympol_to_map_point(maze_map)
         return self.layout
 
+    def points_dict(self):
+        dict_points = {}
+        for i,row in enumerate(self.layout):
+            dict_points[i] = row
+            
+        return dict_points
+
+    def all_points(self):
+        all_points = []
+        for row in self.layout:
+            all_points = all_points+row
+        return all_points
+
     def connected_nodes(self,node):
         nodes = []
         for path in node.map_point.available_pathes:
