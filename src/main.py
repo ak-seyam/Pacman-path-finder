@@ -1,26 +1,27 @@
 from models import Graph, Maze_map, Map_point, Map_el, Location
 from algorithms.BFS import BFS
-from algorithms.DFS import DFS
+from algorithms.DFS import dfs_single_target
 from algorithms.GFS import GFS
 from algorithms.GFS_Solver import GFS_Solver
 from algorithms.BFS_sovler import BFS_Solver
 from utils.informed_multi_target_solver import informed_multi_target_solver
+from algorithms.A_star import a_star
 
 
 mazes = [
     'bigDots.txt', 'bigMaze.txt', 'mediumMaze.txt', 'mediumSearch.txt', 'openMaze.txt', 'smallSearch.txt', 'tinySearch.txt']
 
 
-maze_map = Maze_map(f'Maze/{mazes[4]}')
+# maze_map = Maze_map(f'Maze/{mazes[4]}')
 
-starting_point = maze_map.get_node_by_map_point(maze_map.player).id
+# starting_point = maze_map.get_node_by_map_point(maze_map.player).id
 
 #GFS solver
-sol = GFS_Solver(starting_point)
-informed_multi_target_solver(GFS,maze_map.graph,starting_point,maze_map, sol.solve, sol.steps_counter)
-print('result path',sol.get_path())
-print('result expansion',sol.expansion)
-print('#steps: ',sol.steps)
+# sol = GFS_Solver(starting_point)
+# informed_multi_target_solver(GFS,maze_map.graph,starting_point,maze_map, sol.solve, sol.steps_counter)
+# print('result path',sol.get_path())
+# print('result expansion',sol.expansion)
+# print('#steps: ',sol.steps)
 
 
 # BFS solution
