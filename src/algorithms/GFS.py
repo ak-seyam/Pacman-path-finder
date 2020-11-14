@@ -6,15 +6,6 @@ from utils.closet_target import get_closest_target, clear_visited_targets
 
 _adjacency_dict = {}
 
-# @graph_algorithm()
-# def GFS(graph: Graph, starting_node_id, maze_map: Maze_map ,callback, steps_counter):
-#     targets = maze_map.traget
-#     prev_target_id = starting_node_id
-#     for _ in range(len(targets)):
-#         target_id = get_closest_target(prev_target_id, maze_map)
-#         _GFS(graph,prev_target_id,target_id, callback, steps_counter)
-#         prev_target_id=target_id
-#     clear_visited_targets()    
 @graph_algorithm()
 def GFS(graph: Graph, starting_node_id, target_id, callback, steps_counter):
     _adjacency_dict = graph.get_adjacency_dict()
