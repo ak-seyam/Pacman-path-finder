@@ -47,6 +47,7 @@ def map():
                       cls=EnhancedJSONEncoder)
     # return pickle.dumps(maze.layout)
 
+
 # NOTE for map visit /index.html
 if __name__ == "__main__":
 

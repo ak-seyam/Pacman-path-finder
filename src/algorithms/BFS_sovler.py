@@ -1,6 +1,7 @@
 from models import Maze_map
 from algorithms.A_star import path_to_distance
 
+
 class BFS_Solver():
     """get the parent by reversing the adjacency list"""
 
@@ -8,10 +9,10 @@ class BFS_Solver():
         self.starting_point = start_point  # where i'm going to stop from the next target
         self.maze_map = maze_map
         self.graph = graph
-        self._res = {self.starting_point:[self.starting_point]}
+        self._res = {self.starting_point: [self.starting_point]}
         self.res = {}
         self.steps = 0
-        self.expansion = [] 
+        self.expansion = []
 
     # nodes_list is a list of nodes that consest of [parent,its children...]
     def solver(self, nodes_list):
@@ -25,9 +26,9 @@ class BFS_Solver():
             parent = nodes_list[0]
             if self._res.get(point):
                 if point not in self._res[point]:
-                    self._res[point] = self._res[parent] + [point] 
-            else :
-                self._res[point] = self._res[parent] + [point] 
+                    self._res[point] = self._res[parent] + [point]
+            else:
+                self._res[point] = self._res[parent] + [point]
 
     def get_all_points_pathes(self):
         return self._res
@@ -37,27 +38,29 @@ class BFS_Solver():
             if self.graph.nodes[id].is_target():
                 self.res[id] = self._res[id]
         prev_key = None
-        for key in self.res :
+        for key in self.res:
             if prev_key == None:
                 prev_key = key
             else:
-                for ancestor_index_c_list in range(len(self._res[key])-2,-1,-1):
+                for ancestor_index_c_list in range(len(self._res[key])-2, -1, -1):
                     ancestor_index = self._res[key][ancestor_index_c_list]
-                    if ancestor_index in self._res[prev_key] :
-                        ancestor_index_p = self._res[prev_key].index(ancestor_index)
+                    if ancestor_index in self._res[prev_key]:
+                        ancestor_index_p = self._res[prev_key].index(
+                            ancestor_index)
                         prev_list_portion = self._res[prev_key][ancestor_index_p+1:]
                         prev_list_portion.reverse()
-                        self.res[key] = prev_list_portion + self._res[key][ancestor_index_c_list:]
+                        self.res[key] = prev_list_portion + \
+                            self._res[key][ancestor_index_c_list:]
                         break
             prev_key = key
         return self.res
 
     def steps_counter(self):
         self.steps += 1
-    
+
     def res_path_cost(self):
         distance = 0
         for key in self.res:
             imm_nodes = [self.graph.nodes[id] for id in self.res[key]]
-            distance += path_to_distance(imm_nodes)       
+            distance += path_to_distance(imm_nodes)
         return distance

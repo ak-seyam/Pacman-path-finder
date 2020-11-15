@@ -38,7 +38,6 @@ print('total cost', sol.res_path_cost())
 # print('total cost', sol.res_path_cost())
 
 
-
 # test map convertion
 # print(maze_map)
 # for i in maze_map.graph.get_adjacency_list():

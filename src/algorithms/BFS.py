@@ -20,7 +20,7 @@ def BFS(graph: Graph, starting_node_id, callback, steps_counter):
         if node not in visited_nodes:
             visited_nodes.add(node)
             connections = adjacency_dict.get(node)
-            nodes_list = [node]            
+            nodes_list = [node]
             nodes_list.extend(connections)
             callback(nodes_list)
             if connections:
@@ -30,7 +30,7 @@ def BFS(graph: Graph, starting_node_id, callback, steps_counter):
 
 
 def lazyBFS(starting_node_id, get_adjacent_nodes_ids,
-             callback=None):
+            callback=None):
     """
         Do BFS but with lazy adjacency list loading, suitable for the unusual 
         adjacency list mechanism like the maze-graph converter or getting the
@@ -46,5 +46,5 @@ def lazyBFS(starting_node_id, get_adjacent_nodes_ids,
             if callback:
                 callback(node)
             adjacent_nodes = get_adjacent_nodes_ids(node)
-            if adjacent_nodes :
+            if adjacent_nodes:
                 nodes_queue.extend(adjacent_nodes)
