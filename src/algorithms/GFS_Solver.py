@@ -6,7 +6,7 @@ class GFS_Solver():
     def __init__(self, graph ,starting_point):
         self._path = {}
         self._temp_list = []
-        self.expansion = [starting_point]
+        self.expansion = []
         self.num_hits = 0
         self._visited_pois = [starting_point]
         self.graph = graph
