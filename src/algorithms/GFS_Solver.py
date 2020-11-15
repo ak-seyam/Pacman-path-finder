@@ -13,6 +13,9 @@ class GFS_Solver():
     def solve(self, node: Node):
         id = node.id
         self.expansion.append(id)
+        if id in self._temp_list: # NOTE don't calculate the revolving back steps
+            id_index= self._temp_list.index(id)
+            del self._temp_list[id_index:]
         self._temp_list.append(id)
         if node.is_target() and id not in list(self._path.keys()):
             self._path[id] = self._temp_list[:]

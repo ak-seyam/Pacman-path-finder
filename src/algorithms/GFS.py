@@ -26,7 +26,7 @@ def GFS(graph: Graph, starting_node_id, target_id, callback, steps_counter):
             current = visited_nodes[backtrack_index]
             visited_nodes.append(visited_nodes[backtrack_index])
             while not has_unvisited_child(_adjacency_dict, current, visited_nodes):
-                callback(graph.nodes[current])
+                # callback(graph.nodes[current])
                 backtrack_index -= 2
                 current = visited_nodes[backtrack_index]
                 visited_nodes.append(visited_nodes[backtrack_index])
