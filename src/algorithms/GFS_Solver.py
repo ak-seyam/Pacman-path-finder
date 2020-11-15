@@ -7,7 +7,7 @@ class GFS_Solver():
         self._path = {}
         self._temp_list = []
         self.expansion = [starting_point]
-        self.steps = 0
+        self.num_expanded_nodes = 0
         self._visited_pois = [starting_point]
         self.graph = graph
     def solve(self, node: Node):
@@ -25,7 +25,7 @@ class GFS_Solver():
         return self._path
 
     def steps_counter(self):
-        self.steps += 1
+        self.num_expanded_nodes += 1
 
     def res_path_cost(self):
         distance = 0

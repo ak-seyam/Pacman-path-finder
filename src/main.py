@@ -14,8 +14,8 @@ mazes = [
 
 maze_map = Maze_map(f'Maze/{mazes[0]}')
 
-# starting_point = maze_map.get_node_by_map_point(maze_map.player).id
-# print(maze_map)
+starting_point = maze_map.get_node_by_map_point(maze_map.player).id
+print(maze_map)
 
 # GFS solver
 # graph = maze_map.graph
@@ -24,7 +24,7 @@ maze_map = Maze_map(f'Maze/{mazes[0]}')
 #     GFS, graph, starting_point, maze_map, sol.solve, sol.steps_counter)
 # print('result path', sol.get_path())
 # print('result expansion', sol.expansion)
-# print('#steps: ', sol.steps)
+# print('#steps: ', sol.num_expanded_nodes)
 # print('total cost', sol.res_path_cost())
 
 # print('------------------------------')
