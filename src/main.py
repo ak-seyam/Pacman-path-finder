@@ -12,7 +12,7 @@ mazes = [
     'bigDots.txt', 'bigMaze.txt', 'mediumMaze.txt', 'mediumSearch.txt', 'openMaze.txt', 'smallSearch.txt', 'tinySearch.txt']
 
 
-maze_map = Maze_map(f'Maze/{mazes[-2]}')
+maze_map = Maze_map(f'Maze/{mazes[0]}')
 
 starting_point = maze_map.get_node_by_map_point(maze_map.player).id
 print(maze_map)
@@ -25,16 +25,17 @@ informed_multi_target_solver(
 print('result path', sol.get_path())
 print('result expansion', sol.expansion)
 print('#steps: ', sol.steps)
-print('total cost', sol.total_cost())
+print('total cost', sol.res_path_cost())
 
 
 # BFS solution
 # sol = BFS_Solver(starting_point, maze_map.graph, maze_map)
 # BFS(maze_map.graph, starting_point, sol.solver, sol.steps_counter)
+# print('result is: ',sol._res)
 # print('result is: ',sol.get_result())
 # print('expansion is: ',sol.expansion)
 # print('#steps: ',sol.steps)
-# print('total cost', sol.total_cost())
+# print('total cost', sol.res_path_cost())
 
 
 

@@ -31,7 +31,7 @@ def GFS(graph: Graph, starting_node_id, target_id, callback, steps_counter):
             backtrack_index = -2
             current = visited_nodes[backtrack_index] # start from the second to last one (the before the stuck)
             visited_nodes.append(visited_nodes[backtrack_index])
-            while not has_unvisited_child(graph, current, visited_nodes):
+            while not has_unvisited_child(_adjacency_dict, current, visited_nodes):
                 callback(graph.nodes[current])
                 backtrack_index -= 2
                 current = visited_nodes[backtrack_index]
@@ -41,8 +41,9 @@ def GFS(graph: Graph, starting_node_id, target_id, callback, steps_counter):
         next = get_the_closet_to_target_child(graph,children,target_id, visited_nodes)
     callback(graph.nodes[target_id])
 
-def has_unvisited_child(graph, current, visited_nodes):
-    children = graph.get_adjacency_dict()[current]
+def has_unvisited_child(adjacency_dict, current, visited_nodes):
+    # children = graph.get_adjacency_dict()[current]
+    children = adjacency_dict[current]
     children_ids = [edge[0] for edge in children]
     for id in children_ids:
         if id not in visited_nodes:
