@@ -12,6 +12,7 @@ class GFS_Solver():
         self.graph = graph
     def solve(self, node: Node):
         id = node.id
+        self.expansion.append(id)
         self._temp_list.append(id)
         if node.is_target() and id not in list(self._path.keys()):
             self._path[id] = self._temp_list[:]

@@ -14,17 +14,41 @@ def GFS(graph: Graph, starting_node_id, target_id, callback, steps_counter):
     backtrack_index = -1
     while next != target_id :
         steps_counter() # for each node traversal count the steps
-        children = list()
+        children = list() # TODO make it an actual list from the 2 conditions
         if next!=None : # if it's not stuck
+            # backtrack_index = -1
             callback(graph.nodes[next])
             visited_nodes.append(next)
+            # if next == 117 :
+            #     print("debug")
             children = [x[0] for x in _adjacency_dict[next]]
         else : # if it is stuck 
-            backtrack_index -= 1 # get the children of the previous node aka backtrack
-            callback(graph.nodes[visited_nodes[backtrack_index]])
-            children = [x[0] for x in _adjacency_dict[visited_nodes[backtrack_index]]] # get the children of the previously visited nodes
+            # backtrack_index -= 1 # get the children of the previous node aka backtrack
+            # next = visited_nodes[backtrack_index]
+            # callback(graph.nodes[next])
+            # visited_nodes.append(next)
+            # children = [x[0] for x in _adjacency_dict[next]] # get the children of the previously visited nodes
+            backtrack_index = -2
+            current = visited_nodes[backtrack_index] # start from the second to last one (the before the stuck)
+            visited_nodes.append(visited_nodes[backtrack_index])
+            while not has_unvisited_child(graph, current, visited_nodes):
+                callback(graph.nodes[current])
+                backtrack_index -= 2
+                current = visited_nodes[backtrack_index]
+                visited_nodes.append(visited_nodes[backtrack_index])
+            callback(graph.nodes[current])
+            children = [x[0] for x in _adjacency_dict[current]]
         next = get_the_closet_to_target_child(graph,children,target_id, visited_nodes)
     callback(graph.nodes[target_id])
+
+def has_unvisited_child(graph, current, visited_nodes):
+    children = graph.get_adjacency_dict()[current]
+    children_ids = [edge[0] for edge in children]
+    for id in children_ids:
+        if id not in visited_nodes:
+            return True
+    return False
+
         
 def get_the_closet_to_target_child(graph, children_ids, target_id, exce):
     children_nodes = [graph.nodes[id] for id in children_ids]

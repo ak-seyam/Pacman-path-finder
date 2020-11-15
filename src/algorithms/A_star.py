@@ -86,7 +86,11 @@ def expan_to_path(maze_map, list_nodes):
 def path_to_distance(list_nodes):
     distance = 0
     for i in range(1,len(list_nodes)):
-        distance += list_nodes[i-1].distance(list_nodes[i])
+        try:
+            distance += list_nodes[i-1].distance(list_nodes[i])
+        except :
+            print('node at i-1 ', list_nodes[i-1])
+            print('node at i ', list_nodes[i])
     return distance
 
 
