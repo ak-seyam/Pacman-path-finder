@@ -11,7 +11,7 @@ class BFS_Solver():
         self.graph = graph
         self._res = {self.starting_point: [self.starting_point]}
         self.res = {}
-        self.num_expanded_nodes = 0
+        self.num_hits = 0
         self.expansion = []
 
     # nodes_list is a list of nodes that consest of [parent,its children...]
@@ -56,7 +56,7 @@ class BFS_Solver():
         return self.res
 
     def steps_counter(self):
-        self.num_expanded_nodes += 1
+        self.num_hits += 1
 
     def res_path_cost(self):
         distance = 0
