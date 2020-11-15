@@ -55,10 +55,9 @@ class BFS_Solver():
     def steps_counter(self):
         self.steps += 1
     
-    def total_cost(self):
+    def res_path_cost(self):
         distance = 0
         for key in self.res:
             imm_nodes = [self.graph.nodes[id] for id in self.res[key]]
             distance += path_to_distance(imm_nodes)       
         return distance
-     

@@ -24,7 +24,7 @@ class GFS_Solver():
     def steps_counter(self):
         self.steps += 1
 
-    def total_cost(self):
+    def res_path_cost(self):
         distance = 0
         for key in self._path:
             imm_nodes = [self.graph.nodes[id] for id in self._path[key]]
