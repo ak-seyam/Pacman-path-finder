@@ -18,14 +18,14 @@ starting_point = maze_map.get_node_by_map_point(maze_map.player).id
 print(maze_map)
 
 # GFS solver
-graph = maze_map.graph
-sol = GFS_Solver(graph, starting_point)
-informed_multi_target_solver(
-    GFS, graph, starting_point, maze_map, sol.solve, sol.steps_counter)
-print('result path', sol.get_path())
-print('result expansion', sol.expansion)
-print('#steps: ', sol.steps)
-print('total cost', sol.res_path_cost())
+# graph = maze_map.graph
+# sol = GFS_Solver(graph, starting_point)
+# informed_multi_target_solver(
+#     GFS, graph, starting_point, maze_map, sol.solve, sol.steps_counter)
+# print('result path', sol.get_path())
+# print('result expansion', sol.expansion)
+# print('#steps: ', sol.steps)
+# print('total cost', sol.res_path_cost())
 
 
 # BFS solution
