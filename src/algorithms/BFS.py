@@ -15,7 +15,6 @@ def BFS(graph: Graph, starting_node_id, callback, steps_counter):
     adjacency_dict = graph.get_adjacency_dict()
     nodes_queue = [starting_node_id]
     while len(nodes_queue):
-        steps_counter()
         node = nodes_queue.pop(0)  # remove the first element, FIFO
         if node not in visited_nodes:
             visited_nodes.add(node)
@@ -23,6 +22,7 @@ def BFS(graph: Graph, starting_node_id, callback, steps_counter):
             nodes_list = [node]
             nodes_list.extend(connections)
             callback(nodes_list)
+            steps_counter()
             if connections:
                 for connection in connections:
                     # add the to index to nodes queue
