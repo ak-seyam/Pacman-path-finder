@@ -170,7 +170,12 @@ function draw_map(map_data, options,canv) {
 
     if (options.draw_ids)
       if (point.node_id != null) {
-        draw_node_id(x + step_x / 3, y + (step_y * 3) / 4, point.node_id, canv);
+        draw_node_id(
+          x + step_x / 3,
+          y + (step_y * 3) / 4,
+          point.node_id,
+          ctx_nodes
+        );
       }
   });
 }
@@ -202,6 +207,7 @@ async function main() {
   draw_wall: true,
   draw_target: true,
   draw_player: true,
+  draw_ids: true,
   
   };
   // draw_map(map_data, { draw_wall: true }, ctx_back);
