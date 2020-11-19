@@ -64,6 +64,7 @@ def a_star_one_target(start_node, end_node):
 
 
 def expan_to_path(list_nodes):
+    # TODO test multible times
     list_nodes = list_nodes[:]
 
     next_parent = None if len(list_nodes) == 1 else list_nodes[-1]
