@@ -4,7 +4,6 @@ from utils.graph_preprocessor import graph_algorithm
 
 # TODO: try to make a generic BFS
 @graph_algorithm()
-# def BFS(graph: Graph, starting_node_id, callback=lambda node: print(f"Node Id = {node.id}")):
 def BFS(graph: Graph, starting_node_id, callback, steps_counter):
     """
     Do a BFS over a graph
