@@ -44,19 +44,42 @@ class Path:
     start_point: Map_point
     # end: Map_point
 
-    def next_node_point(self, current_cost=0) -> Map_point:
+    # def next_node_point(self, current_cost = 0) -> Map_point:
+    #     point = self.start_point
+    #     if self.start_point.is_node():
+    #         current_cost +=1
+    #         return point , current_cost
+    #     if self.start_point.is_end_point():
+    #         return None,None
+    #     if self.start_point.is_bidirectional():
+    #         next_path = self.start_point.next_pathes(self.start_direction).send(
+    #             None)  # get next value from generator
+            
+    #         return next_path.next_node_point(current_cost + 1)
+
+    def next_node_point(self) -> Map_point:
+        point, route = self.next_node_route()
+        if point:
+            return point, len(route)
+        else:
+            return None,None
+
+
+    def next_node_route(self, route=None) -> Map_point:
         point = self.start_point
+        if route is None:
+            route = [] 
+        
         if self.start_point.is_node():
-            current_cost += 1
-            return point, current_cost
+            route.append(self.start_point)
+            return point, route
         if self.start_point.is_end_point():
             return None, None
         if self.start_point.is_bidirectional():
             next_path = self.start_point.next_pathes(self.start_direction).send(
                 None)  # get next value from generator
-
-            return next_path.next_node_point(current_cost + 1)
-
+            route.append(self.start_point)
+            return next_path.next_node_route(route)
 
 @dataclass
 class Map_point:
@@ -64,7 +87,8 @@ class Map_point:
     location: Location = Location(-1, -1)
     available_pathes: List[Path] = None
     node_id: int = None
-
+    def __repr__(self):
+        return str(self.location)+'content: '+str(self.content.name)
     def is_bidirectional(self):
         ''' test if point is in one way road '''
         return len(self.available_pathes) == 2 and self.content != Map_el.WALL
@@ -97,6 +121,15 @@ class Map_point:
             if path.start_direction != from_direction.opposite():
                 yield path
 
+    def route_to_node_points(self) -> Map_point:
+        node_routes = {}
+        
+        for path in self.available_pathes:
+            point, route = path.next_node_route()
+            if point:
+                node_routes[point.node_id] = route
+
+        return node_routes
 
 if __name__ == "__main__":
     import doctest

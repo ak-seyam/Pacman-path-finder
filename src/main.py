@@ -5,8 +5,8 @@ from algorithms.GFS import GFS
 from algorithms.GFS_Solver import GFS_Solver
 from algorithms.BFS_sovler import BFS_Solver
 from utils.informed_multi_target_solver import informed_multi_target_solver
-from algorithms.A_star import a_star
 from utils.prepare_targets import prepare_targets
+from algorithms.A_star import a_star, path_to_distance,a_star_one_target
 
 
 mazes = [
@@ -49,12 +49,6 @@ print(prepare_targets(graph, maze_map.player.node_id))
 
 # Solver code
 
-def solve_a_star(maze_map):
-    player_point = maze_map.player
-    start_node_id = maze_map._get_node_by_location(player_point.location).id
-    moving_map = a_star(maze_map, start_node_id)
-    for k in moving_map.keys():
-        print(k, moving_map[k])
 
 
 def solve_dfs(maze_map):
@@ -76,8 +70,30 @@ def solve_dfs(maze_map):
 
 # a_star solution
 # for map_ in mazes:
-# # map_ = mazes[2]
-# # map_ = mazes[-1]
-#     maze_map = Maze_map(f'Maze/{map_}')
-#     print(maze_map)
-#     print(solve_a_star(maze_map))
+# map_ = mazes[2]
+# map_ = mazes[0]
+    # maze_map = Maze_map(f'Maze/{map_}')
+    # print(maze_map)
+    # solve_a_star(maze_map)
+
+# part 1
+# DFS
+part_1_mazes = [
+    "bigMaze.txt",
+    "mediumMaze.txt",
+    "openMaze.txt"
+]
+
+# a*
+# for maze_name in part_1_mazes:
+#     maze_map = Maze_map(f'Maze/{maze_name}')
+#     start_node = maze_map.get_node_by_map_point(maze_map.player)
+#     target_node = maze_map.get_node_by_map_point(maze_map.traget[0])
+#     adjc_dict = maze_map.graph.get_adjacency_dict()
+#     # path = dfs_single_target(start_node_id, target_node_id, adjc_dict)
+#     path, cost = a_star_one_target(start_node, target_node)
+#     with open(f'sol/a_star/{maze_name}', 'w') as sol_file:
+#         # sol_file.write(str(maze_map))
+#         sol_file.write(str([n.id for n in path])+'\n')
+#         sol_file.write('cost = ' + str(cost))
+
