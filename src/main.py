@@ -1,6 +1,6 @@
 from models import Graph, Maze_map, Map_point, Map_el, Location
 from algorithms.BFS import BFS
-from algorithms.DFS import dfs_single_target
+# from algorithms.DFS import dfs_single_target
 from algorithms.GFS import GFS
 from algorithms.GFS_Solver import GFS_Solver
 from algorithms.BFS_sovler import BFS_Solver
@@ -12,26 +12,30 @@ mazes = [
     'bigDots.txt', 'bigMaze.txt', 'mediumMaze.txt', 'mediumSearch.txt', 'openMaze.txt', 'smallSearch.txt', 'tinySearch.txt']
 
 
-# maze_map = Maze_map(f'Maze/{mazes[4]}')
+maze_map = Maze_map(f'Maze/{mazes[2]}')
 
-# starting_point = maze_map.get_node_by_map_point(maze_map.player).id
+starting_point = maze_map.get_node_by_map_point(maze_map.player).id
+print(maze_map)
 
-#GFS solver
-# sol = GFS_Solver(starting_point)
-# informed_multi_target_solver(GFS,maze_map.graph,starting_point,maze_map, sol.solve, sol.steps_counter)
-# print('result path',sol.get_path())
-# print('result expansion',sol.expansion)
-# print('#steps: ',sol.steps)
+# GFS solver
+graph = maze_map.graph
+sol = GFS_Solver(graph, starting_point)
+informed_multi_target_solver(
+    GFS, graph, starting_point, maze_map, sol.solve, sol.steps_counter)
+print('result path', sol.get_path())
+print('result expansion', sol.expansion)
+print('#hits: ', sol.num_hits)
+print('total cost', sol.res_path_cost())
 
+# print('------------------------------')
 
-# BFS solution
+# BFS solution 
 # sol = BFS_Solver(starting_point, maze_map.graph, maze_map)
 # BFS(maze_map.graph, starting_point, sol.solver, sol.steps_counter)
 # print('result is: ',sol.get_result())
 # print('expansion is: ',sol.expansion)
-# print('#steps: ',sol.steps)
-
-# print(maze_map)
+# print('#hits: ',sol.num_hits)
+# print('total cost', sol.res_path_cost())
 
 
 # test map convertion

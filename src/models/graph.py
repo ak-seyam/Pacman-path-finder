@@ -7,7 +7,7 @@ class Node(object):
         self.id = id
         self.edges = []
         self.map_point = map_point
-    
+
     def is_target(self):
         return self.map_point.is_target()
 
@@ -15,6 +15,7 @@ class Node(object):
         for edge in self.edges:
             if edge.node_to != self:
                 yield edge.node_to
+
     def __str__(self):
         if Map_point is not None:
             return str(f"{self.id} @{self.map_point.location}")
@@ -22,16 +23,17 @@ class Node(object):
             return str(f"{self.id}")
 
     def heuristics(self, node):
-        x1,y1 = self.map_point.location.x,self.map_point.location.y
-        x2,y2 = node.map_point.location.x, node.map_point.location.y
+        x1, y1 = self.map_point.location.x, self.map_point.location.y
+        x2, y2 = node.map_point.location.x, node.map_point.location.y
         return abs(x2-x1)+abs(y2-y1)
-         
+
     def distance(self, node):
         if node == self:
             return 0
         for edge in self.edges:
             if edge.node_to == node:
                 return edge.distance
+
 
 class Edge(object):
     def __init__(self, id: int, node_from: Node, node_to: Node, distance=-1):
@@ -100,7 +102,7 @@ class Graph(object):
 
     def get_adjacency_list(self):
         return self.get_adjacency_dict().items()
-    
+
     def get_adjacency_dict(self):
         """ return a list of lists.
         The indecies of the outer list represent
@@ -108,7 +110,7 @@ class Graph(object):
         Each section in the list will store a list
         of tuples that looks like this:
         (To Node Id, Edge id)"""
-        
+
         # adjc_list = [None]*(len(self.nodes)+1)
         adjc_list = {}
         for node in self.nodes:

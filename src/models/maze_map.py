@@ -39,9 +39,9 @@ class Maze_map:
 
     def points_dict(self):
         dict_points = {}
-        for i,row in enumerate(self.layout):
+        for i, row in enumerate(self.layout):
             dict_points[i] = row
-            
+
         return dict_points
 
     def all_points(self):
@@ -50,14 +50,13 @@ class Maze_map:
             all_points = all_points+row
         return all_points
 
-    def connected_nodes(self,node):
+    def connected_nodes(self, node):
         nodes = []
         for path in node.map_point.available_pathes:
             node_point = path.next_node_point()[0]
             if node_point:
                 nodes.append(self._get_node_by_location(node_point.location))
         return nodes
-
 
     def get_point_by_location(self, location: Location) -> Map_point:
         return self.layout[location.y][location.x]
@@ -72,7 +71,7 @@ class Maze_map:
             for point in row:
                 if point.is_node():
                     n = graph.insert_node(self._next_node_id(), point)
-                    
+
                     self.layout[point.location.y][point.location.x].node_id = n.id
 
         # update the graph with nodes
@@ -84,7 +83,7 @@ class Maze_map:
             for connected_node in connect_node_costs.keys():
                 graph.insert_edge(self._next_edge_id(),
                                   connected_node.id, node.id,
-                                   connect_node_costs[connected_node])
+                                  connect_node_costs[connected_node])
 
         return graph
     # NOTE why not use location as node id
@@ -94,7 +93,7 @@ class Maze_map:
         available_pathes = node.map_point.available_pathes
         if available_pathes:
             for path in available_pathes:
-                next_point,cost =  path.next_node_point()
+                next_point, cost = path.next_node_point()
                 if next_point:
                     n = self._get_node_by_location(next_point.location)
                     # cost_from
@@ -102,6 +101,7 @@ class Maze_map:
                         nodes_cost[n] = cost
 
         return nodes_cost
+
     def _mark_visited(self, map_point: Map_point):
         loc = map_point.location
         map_point.is_visited = True
@@ -189,7 +189,7 @@ class Maze_map:
         # TODO may need better approach check note in build graph
 
         point = self.get_point_by_location(location)
-        return self.graph.get_node_by_id(point.node_id)                
+        return self.graph.get_node_by_id(point.node_id)
 
     def __str__(self):
         # TODO make the size equal to maxmimun number of node length

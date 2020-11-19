@@ -57,6 +57,7 @@ def map_path():
     # to_node = maze.graph.get_node_by_id(to_node_id)
     return json.dumps(from_node.map_point.route_to_node_points(), cls=EnhancedJSONEncoder)
 
+
 # NOTE for map visit /index.html
 if __name__ == "__main__":
 
