@@ -1,22 +1,22 @@
 from models import Graph, Maze_map, Map_point, Map_el, Location
 from algorithms.BFS import BFS
-# from algorithms.DFS import dfs_single_target
+from algorithms.DFS import dfs_single_target
 from algorithms.GFS import GFS
 from algorithms.GFS_Solver import GFS_Solver
 from algorithms.BFS_sovler import BFS_Solver
 from utils.informed_multi_target_solver import informed_multi_target_solver
 from utils.prepare_targets import prepare_targets
-from algorithms.A_star import a_star, path_to_distance,a_star_one_target
+from algorithms.A_star import a_star, path_to_distance, a_star_one_target, path_to_points
 
 
 mazes = [
     'bigDots.txt', 'bigMaze.txt', 'mediumMaze.txt', 'mediumSearch.txt', 'openMaze.txt', 'smallSearch.txt', 'tinySearch.txt']
 
 
-maze_map = Maze_map(f'Maze/{mazes[-1]}')
+# maze_map = Maze_map(f'Maze/{mazes[-1]}')
 
-starting_point = maze_map.get_node_by_map_point(maze_map.player).id
-print(maze_map)
+# starting_point = maze_map.get_node_by_map_point(maze_map.player).id
+# print(maze_map)
 
 # GFS solver
 # graph = maze_map.graph
@@ -28,7 +28,7 @@ print(maze_map)
 # print('#hits: ', sol.num_hits)
 # print('total cost', sol.res_path_cost())
 
-print(prepare_targets(graph, maze_map.player.node_id))
+# print(prepare_targets(graph, maze_map.player.node_id))
 # print('------------------------------')
 
 # BFS solution 
@@ -84,16 +84,31 @@ part_1_mazes = [
     "openMaze.txt"
 ]
 
-# a*
+
 # for maze_name in part_1_mazes:
 #     maze_map = Maze_map(f'Maze/{maze_name}')
 #     start_node = maze_map.get_node_by_map_point(maze_map.player)
 #     target_node = maze_map.get_node_by_map_point(maze_map.traget[0])
 #     adjc_dict = maze_map.graph.get_adjacency_dict()
-#     # path = dfs_single_target(start_node_id, target_node_id, adjc_dict)
-#     path, cost = a_star_one_target(start_node, target_node)
-#     with open(f'sol/a_star/{maze_name}', 'w') as sol_file:
-#         # sol_file.write(str(maze_map))
-#         sol_file.write(str([n.id for n in path])+'\n')
-#         sol_file.write('cost = ' + str(cost))
+    
 
+    #a*
+    # path, cost = a_star_one_target(start_node, target_node)
+    # route = path_to_points(path)
+    # with open(f'sol/a_star/{maze_name}', 'w') as sol_file:
+    #     # sol_file.write(str(maze_map))
+    #     sol_file.write(str([n.id for n in path])+'\n')
+    #     sol_file.write('cost = ' + str(cost)+ '\n')
+    #     sol_file.write('route = ' + str(route))
+
+    # dfs
+    # path_ids = dfs_single_target(start_node.id, target_node.id, adjc_dict)
+    # # print(path_ids[path_ids[0]])
+    # path = [maze_map.graph.nodes[id_] for id_ in path_ids]
+    # cost  = path_to_distance(path)
+    # route = path_to_points(path)
+    # with open(f'sol/dfs/{maze_name}', 'w') as sol_file:
+    #     # sol_file.write(str(maze_map))
+    #     sol_file.write(str([n.id for n in path])+'\n')
+    #     sol_file.write('cost = ' + str(cost)+ '\n')
+    #     sol_file.write('route = ' + str(route))
