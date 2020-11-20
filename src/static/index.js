@@ -30,62 +30,6 @@ const element_types = {
   EMPTY: "EMPTY",
 };
 
-const test_expantion = [
-  0,
-  0,
-  1,
-  2,
-  3,
-  14,
-  36,
-  100,
-  67,
-  68,
-  69,
-  202,
-  246,
-  263,
-  272,
-  262,
-  245,
-  244,
-  261,
-  271,
-  281,
-  282,
-  221,
-  222,
-  283,
-  284,
-  250,
-  251,
-  238,
-  252,
-  253,
-  254,
-  285,
-  275,
-  276,
-  239,
-  256,
-  257,
-  268,
-  280,
-  267,
-  266,
-  279,
-  278,
-  265,
-  264,
-  277,
-  286,
-  287,
-  258,
-  232,
-  211,
-  200,
-  288,
-];
 
 const map_data = fetch("http://127.0.0.1:5000/map").then((response) =>
   response.json()
@@ -141,6 +85,19 @@ function get_point_by_node_id(maze_map, node_id) {
       return points[p];
     }
   }
+}
+function draw_path(map_data, points, canv) {
+  const [step_x, step_y] = step_map(map_data);
+  points.forEach((point) => {
+    draw_map_element(
+      point.location.x,
+      point.location.y,
+      step_x,
+      step_y,
+      element_types.PLAYER,
+      canv
+    );
+  });
 }
 
 function canvas_step(map_width, map_height) {
@@ -216,14 +173,19 @@ async function main() {
   draw_wall: true,
   draw_target: true,
   draw_player: true,
-  draw_ids: true,
+  draw_ids: false,
   
   };
+  
   // draw_map(map_data, { draw_wall: true }, ctx_back);
+  
   draw_map(map_data, options, ctx_back);
-
-  // draw_map(map_data, { draw_ids: true }, ctx_nodes);
-
+  
+  // draw_ids
+  draw_map(map_data, {draw_ids: true}, ctx_nodes);
+  
+  const sol_data = await fetch("http://127.0.0.1:5000/map/sol").then(res => res.json());
+  draw_path(map_data,sol_data, ctx_nodes)
 }
 
 main();
