@@ -156,8 +156,8 @@ function draw_map(map_data, options,canv) {
   const points = map_data.map;
   const [step_x, step_y] = step_map(map_data);
   points.forEach((point) => {
-    const x = point.location.x * step_x;
-    const y = point.location.y * step_y;
+    
+    
     let element = point.content;
     if (element == element_types.WALL) {
       element = options.draw_wall ? element : element_types.EMPTY;
@@ -166,15 +166,24 @@ function draw_map(map_data, options,canv) {
     } else if (element == element_types.PLAYER) {
       element = options.draw_player ? element : element_types.EMPTY;
     }
-    draw_map_element(x, y, step_x, step_y, element, canv);
+    if (options.draw_player || options.draw_target || options.draw_player)
+    draw_map_element(
+      point.location.x,
+      point.location.y,
+      step_x,
+      step_y,
+      element,
+      canv
+    );
 
     if (options.draw_ids)
       if (point.node_id != null) {
         draw_node_id(
-          x + step_x / 3,
-          y + (step_y * 3) / 4,
+          point.location.x,
+          point.location.y,
           point.node_id,
-          ctx_nodes
+          step_x, step_y,
+          canv
         );
       }
   });
