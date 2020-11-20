@@ -86,19 +86,27 @@ def a_star_one_target(start_node, end_node):
     # add the target
     visited_nodes.append(current_node)
     # path = expan_to_path(visited_nodes)
-    path = parent_list_to_path(node_parent_distance, end_node)
+    path = parent_list_distance_to_path(node_parent_distance, end_node)
     return path, path_to_distance(path)
 
 
 def parent_list_to_path(node_parent,node):
     path = [node]
     while node:
-        parent,distance = node_parent.get(node,(None,None))
+        parent = node_parent.get(node,(None,None))
         if parent:
             path.append(parent)
         node = parent
     
     return path
+
+def parent_list_distance_to_path(node_parent,node):
+    for k in node_parent.keys():
+        parent_node ,distance= node_parent[k]
+        node_parent[k] = parent_node
+
+    return parent_list_to_path(node_parent, node)
+
 
 
 
@@ -107,6 +115,8 @@ def path_to_distance(list_nodes):
     ''' get the distance to go through the list nodes path'''
     distance = 0
     for i in range(1, len(list_nodes)):
+        if i ==31:
+            x=1
         distance += list_nodes[i-1].distance(list_nodes[i])
     return distance
 
