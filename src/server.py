@@ -6,13 +6,15 @@ import json
 import dataclasses
 import pickle
 
+from algorithms.A_star import a_star, path_to_distance, a_star_one_target
+
 
 from enum import Enum
 app = Flask(__name__)
 
 mazes = [
     'bigDots.txt', 'bigMaze.txt', 'mediumMaze.txt', 'mediumSearch.txt', 'openMaze.txt', 'smallSearch.txt', 'tinySearch.txt']
-map_ = mazes[3]
+map_ = mazes[1]
 maze = Maze_map(f'Maze/{map_}')
 
 
@@ -48,14 +50,24 @@ def map():
                        "width": width},
                       cls=EnhancedJSONEncoder)
     # return pickle.dumps(maze.layout)
-@app.route("/map/path")
-def map_path():
-    from_node_id = int(request.args.get('from'))
+# @app.route("/map/path")
+# def map_path():
+    # from_node_id = int(request.args.get('from'))
     # to_node_id = request.args.get('to_node')
-    from_node = maze.graph.get_node_by_id(from_node_id)
+    # from_node = maze.graph.get_node_by_id(from_node_id)
 
     # to_node = maze.graph.get_node_by_id(to_node_id)
-    return json.dumps(from_node.map_point.route_to_node_points(), cls=EnhancedJSONEncoder)
+    # return json.dumps(from_node.map_point.route_to_node_points(), cls=EnhancedJSONEncoder)
+
+@app.route("/map/sol")
+def map_sol():
+    maze_map = maze
+    start_node = maze_map.get_node_by_map_point(maze_map.player)
+    target_node = maze_map.get_node_by_map_point(maze_map.traget[0])
+
+    path, cost = a_star_one_target(start_node, target_node)
+    points = [node.map_point for node in path]
+    return json.dumps(points , cls=EnhancedJSONEncoder)
 
 
 # NOTE for map visit /index.html
