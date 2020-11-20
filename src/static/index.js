@@ -1,27 +1,41 @@
 // import { wall_img, player_img, space_img, box_img } from "./assets_loader.js";
-import { draw_map_element, draw_node_id } from "./drawer.js";
-var width = 4080;
-var height = 1080;
+import {
+  draw_map_element,
+  draw_node_id,
+  draw_map_element_arc,
+} from "./drawer.js";
 
-var canvas_back = document.createElement("canvas");
-canvas_back.setAttribute("width", width);
-canvas_back.setAttribute("height", height);
-canvas_back.setAttribute("class", "back_canv");
-document.body.appendChild(canvas_back);
-var ctx_back = canvas_back.getContext("2d");
+const step_x = 50,step_y =50
 
-var canvas_nodes = document.createElement("canvas");
-canvas_nodes.setAttribute("width", width);
-canvas_nodes.setAttribute("height", height);
-document.body.appendChild(canvas_nodes);
-var ctx_nodes = canvas_nodes.getContext("2d");
 
-var canvas_path = document.createElement("canvas");
-canvas_path.setAttribute("width", width);
-canvas_path.setAttribute("height", height);
-document.body.appendChild(canvas_path);
-canvas_path.setAttribute("class", "back_canv");
-var ctx_path = canvas_path.getContext("2d");
+function create_canvas(height,width) {
+  const container = document.getElementById("canvas_container")
+  // remove old canvas
+  container.innerHTML = ""
+
+
+  var canvas_back = document.createElement("canvas");
+  canvas_back.setAttribute("width", width);
+  canvas_back.setAttribute("height", height);
+  canvas_back.setAttribute("class", "back_canv");
+  container.appendChild(canvas_back);
+  var ctx_back = canvas_back.getContext("2d");
+  
+  var canvas_nodes = document.createElement("canvas");
+  canvas_nodes.setAttribute("width", width);
+  canvas_nodes.setAttribute("height", height);
+  container.appendChild(canvas_nodes);
+  var ctx_nodes = canvas_nodes.getContext("2d");
+  
+  var canvas_path = document.createElement("canvas");
+  canvas_path.setAttribute("width", width);
+  canvas_path.setAttribute("height", height);
+  container.appendChild(canvas_path);
+  canvas_path.setAttribute("class", "back_canv");
+  var ctx_path = canvas_path.getContext("2d");
+
+  return [ctx_back,ctx_nodes,ctx_path]
+}
 
 
 
@@ -96,9 +110,8 @@ function get_point_by_node_id(maze_map, node_id) {
   }
 }
 function draw_path(map_data, points, canv) {
-  const [step_x, step_y] = step_map(map_data);
   points.forEach((point) => {
-    draw_map_element(
+    draw_map_element_arc(
       point.location.x,
       point.location.y,
       step_x,
@@ -109,18 +122,9 @@ function draw_path(map_data, points, canv) {
   });
 }
 
-function canvas_step(map_width, map_height) {
-  const canvas_width = width;
-  const canvas_height = height;
-  const step_x = parseInt(canvas_width / map_width);
-  const step_y = parseInt(canvas_height / map_height);
-
-  return [step_x, step_y];
-}
 
 function draw_map(map_data, options,canv) {
   const points = map_data.map;
-  const [step_x, step_y] = step_map(map_data);
   points.forEach((point) => {
     
     
@@ -155,12 +159,6 @@ function draw_map(map_data, options,canv) {
   });
 }
 
-function step_map(map_data) {
-  const map_width = map_data.width;
-  const map_height = map_data.height;
-  return canvas_step(map_width, map_height);
-}
-
 function draw() {
   // ctx.clearRect(0, 0, canvas.width, canvas.height);
   // draw_element(0, 0,"wall");
@@ -173,21 +171,22 @@ function draw() {
 // draw_element(50, 50, "wall", ctx);
 // draw();
 
-function wipe_all() {
-  ctx_back.clearRect(0, 0, canvas_back.width, canvas_back.height);
-  ctx_nodes.clearRect(0, 0, canvas_back.width, canvas_back.height);
-  ctx_path.clearRect(0, 0, canvas_back.width, canvas_back.height);
-  
-}
+// function wipe_all(canvas_list,height,width) {
+//   canvas_list.forEach(canv => {
+//     canv.clearRect(0, 0, height, width);
+//   })  
+// }
 
 
 async function main() {
   const selector = document.getElementById("map_selector");
-  selector.addEventListener("change", () => {wipe_all();main()})
-  const map_id = selector.selectedIndex
+  const map_id = selector[selector.selectedIndex].value;
   const map_data = await fetch(`http://127.0.0.1:5000/map/${map_id}`).then((res) =>
     res.json()
   );
+
+  const [ctx_back,ctx_nodes,ctx_path] = create_canvas(map_data.height*step_y,map_data.width*step_x)
+
 
   const options = {
   draw_wall: true,
@@ -210,4 +209,8 @@ async function main() {
   draw_path(map_data, sol_data, ctx_path);
 }
 
+const selector = document.getElementById("map_selector");
+selector.addEventListener("change", () => {
+  main();
+});
 main();

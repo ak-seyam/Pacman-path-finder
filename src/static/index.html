@@ -2,30 +2,42 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>sokoban</title>
+    <title>maze</title>
     <style>
       canvas {
         position: absolute;
         left: 40px;
         /* display: block; */
-        
       }
-      .back_canv{
+      .back_canv {
         z-index: -2;
         background: rgb(223 201 201 / 0%);
-        
       }
     </style>
   </head>
 
   <body style="background: rgb(206, 178, 178)">
     <select name="map" id="map_selector">
-      <option value="1" >1</option>
-      <option value="2" >2</option>
-      <option value="3" selected>3</option>
+      <optgroup label="one_target">
+        <option value="1" selected>bigMaze</option>
+        <option value="2" >mediumMaze</option>
+        <option value="4">openMaze</option>
+      </optgroup>
+      <optgroup label="multiple_target">
+        <option value="3">mediumSearch</option>
+        <option value="5">smallSearch</option>
+        <option value="6">tinySearch</option>
+        <option value="0">bigDots</option>
+      </optgroup>
     </select>
-
-
+    <div id="canvas_container"></div>
     <script type="module" src="./index.js"></script>
   </body>
 </html>
+
+
+
+
+
+
+
