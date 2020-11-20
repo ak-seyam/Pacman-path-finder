@@ -2,6 +2,10 @@
 .env_win
 .vscode
 __pycache__
-
-
-
+a_sol.txt
+dfs_sol.txt
+prof.csv
+res.txt
+sol.txt
+src/try.py
+src/hot_reloder.py
