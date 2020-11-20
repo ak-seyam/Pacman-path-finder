@@ -40,9 +40,9 @@ const element_types = {
 };
 
 
-const map_data = fetch("http://127.0.0.1:5000/map").then((response) =>
-  response.json()
-);
+// const map_data = fetch("http://127.0.0.1:5000/map").then((response) =>
+//   response.json()
+// );
 
 // map_data.then(async (map_data) => {
 //   draw_map(map_data,options)
@@ -173,8 +173,19 @@ function draw() {
 // draw_element(50, 50, "wall", ctx);
 // draw();
 
+function wipe_all() {
+  ctx_back.clearRect(0, 0, canvas_back.width, canvas_back.height);
+  ctx_nodes.clearRect(0, 0, canvas_back.width, canvas_back.height);
+  ctx_path.clearRect(0, 0, canvas_back.width, canvas_back.height);
+  
+}
+
+
 async function main() {
-  const map_data = await fetch("http://127.0.0.1:5000/map").then((res) =>
+  const selector = document.getElementById("map_selector");
+  selector.addEventListener("change", () => {wipe_all();main()})
+  const map_id = selector.selectedIndex
+  const map_data = await fetch(`http://127.0.0.1:5000/map/${map_id}`).then((res) =>
     res.json()
   );
 
@@ -193,7 +204,9 @@ async function main() {
   // draw_ids
   draw_map(map_data, {draw_ids: true}, ctx_nodes);
   
-  const sol_data = await fetch("http://127.0.0.1:5000/map/sol").then(res => res.json());
+  const sol_data = await fetch(
+    `http://127.0.0.1:5000/map/${map_id}/sol`
+  ).then((res) => res.json());
   draw_path(map_data, sol_data, ctx_path);
 }
 

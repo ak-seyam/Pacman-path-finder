@@ -12,10 +12,11 @@ from algorithms.A_star import a_star, path_to_distance, a_star_one_target,path_t
 from enum import Enum
 app = Flask(__name__)
 
-mazes = [
+mazes_files = [
     'bigDots.txt', 'bigMaze.txt', 'mediumMaze.txt', 'mediumSearch.txt', 'openMaze.txt', 'smallSearch.txt', 'tinySearch.txt']
-map_ = mazes[1]
-maze = Maze_map(f'Maze/{map_}')
+
+
+mazes = [Maze_map(f'Maze/{map_}') for map_ in mazes_files]
 
 
 class EnhancedJSONEncoder(json.JSONEncoder):
@@ -38,18 +39,16 @@ def hello():
     return 'hello'
 
 
-@app.route('/map')
-def map():
-    # j = ""
-    # for row in maze.layout:
-    # j += json.dumps(row , cls=EnhancedJSONEncoder)
+@app.route('/map/<int:maze_num>')
+def map(maze_num):
+    maze = mazes[maze_num]
     height = len(maze.layout)
     width = len(maze.layout[0])
     return json.dumps({"map": maze.all_points(),
                        "height": height,
                        "width": width},
                       cls=EnhancedJSONEncoder)
-    # return pickle.dumps(maze.layout)
+    
 # @app.route("/map/path")
 # def map_path():
     # from_node_id = int(request.args.get('from'))
@@ -59,9 +58,10 @@ def map():
     # to_node = maze.graph.get_node_by_id(to_node_id)
     # return json.dumps(from_node.map_point.route_to_node_points(), cls=EnhancedJSONEncoder)
 
-@app.route("/map/sol")
-def map_sol():
-    maze_map = maze
+
+@app.route("/map/<int:maze_num>/sol")
+def map_sol(maze_num):
+    maze_map = mazes[maze_num]
     start_node = maze_map.get_node_by_map_point(maze_map.player)
     target_node = maze_map.get_node_by_map_point(maze_map.traget[0])
 
