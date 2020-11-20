@@ -1,6 +1,8 @@
 from models.graph import Graph
 from models.maze_map import Maze_map
+from models.maze_items import Map_point
 from utils.graph_preprocessor import graph_algorithm
+from typing import List
 
 
 def a_star(maze_map: Maze_map, starting_node_id: int):
@@ -98,33 +100,21 @@ def parent_list_to_path(node_parent,node):
     
     return path
 
-def expan_to_path(list_nodes):
-    # TODO test multible times
-    list_nodes = list_nodes[:]
 
-    next_parent = None if len(list_nodes) == 1 else list_nodes[-1]
-    path = [list_nodes[-1]]
-    list_nodes.reverse()
-
-    while next_parent is not None:
-        next_index = list_nodes.index(next_parent)
-        list_nodes = list_nodes[next_index:]
-        next_parent = get_next_parent(list_nodes, next_parent)
-        if next_parent:
-            path.append(next_parent)
-
-    path.reverse()
-    return path
 
 
 def path_to_distance(list_nodes):
+    ''' get the distance to go through the list nodes path'''
     distance = 0
     for i in range(1, len(list_nodes)):
         distance += list_nodes[i-1].distance(list_nodes[i])
     return distance
 
-
-def get_next_parent(list_nodes, node):
-    for n in list_nodes:
-        if n in node.connected_nodes():
-            return n
+def path_to_points(list_nodes) -> List[Map_point]:
+    ''' get detaialed route as map_points for the path'''
+    route = []
+    for i in range(1, len(list_nodes)):
+        last_node = list_nodes[i-1]
+        current_node = list_nodes[i]
+        route += last_node.connected_nodes_route()[current_node.id]
+    return route
