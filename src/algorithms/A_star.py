@@ -31,9 +31,20 @@ def a_star(maze_map: Maze_map, starting_node_id: int):
     return moving_map, cost_map
 
 
-def a_star_one_target(start_node, end_node):
+def expand_id_generator():
+    expand_id = 0
+    while True:
+        yield expand_id
+        expand_id += 1
 
-    cost_value = {start_node: start_node.heuristics(end_node)}
+
+def a_star_one_target(start_node, end_node):
+    exp_gen = expand_id_generator()
+    
+    node_parent_distance = {start_node: (None,0)}  # node : (parent,distance)
+    distance_to_current_node = 0
+    cost_value = {start_node: start_node.heuristics(end_node)} # (node):cost
+
     visited_nodes = []
     current_node = start_node
     _res = {start_node: start_node}
@@ -41,16 +52,29 @@ def a_star_one_target(start_node, end_node):
     while current_node != end_node:
         connected_nodes = current_node.connected_nodes()
 
-        path = expan_to_path(visited_nodes + [current_node])
-        distance_to_current_node = path_to_distance(path)
-        for node in connected_nodes:
+        # path = expan_to_path(visited_nodes + [current_node])
+        # distance_to_current_node = path_to_distance(path)
+        parent , parent_distance = node_parent_distance[current_node]
+        if parent:
+            distance_to_current_node = parent_distance + parent.distance(current_node)
+        
+        for node in connected_nodes: # node is the expanded nodes
             if node not in visited_nodes:
                 distance = current_node.distance(
                     node) + distance_to_current_node
-                # total_distance  =
                 heuristics = current_node.heuristics(end_node)
                 cost = distance + heuristics
-                cost_value[node] = cost
+                # if value in cost smaller don't add
+                old_cost = cost_value.get(node,None)
+
+                if old_cost:
+                    if cost < old_cost:
+                        cost_value[node] = cost
+                        node_parent_distance[node] = (current_node,distance_to_current_node)
+                else:
+                    cost_value[node] = cost
+                    node_parent_distance[node] = (current_node,distance_to_current_node)
+
 
         cost_value.pop(current_node, None)
         visited_nodes.append(current_node)
@@ -59,9 +83,20 @@ def a_star_one_target(start_node, end_node):
 
     # add the target
     visited_nodes.append(current_node)
-    path = expan_to_path(visited_nodes)
+    # path = expan_to_path(visited_nodes)
+    path = parent_list_to_path(node_parent_distance, end_node)
     return path, path_to_distance(path)
 
+
+def parent_list_to_path(node_parent,node):
+    path = [node]
+    while node:
+        parent,distance = node_parent.get(node,(None,None))
+        if parent:
+            path.append(parent)
+        node = parent
+    
+    return path
 
 def expan_to_path(list_nodes):
     # TODO test multible times
