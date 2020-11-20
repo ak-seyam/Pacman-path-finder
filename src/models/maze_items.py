@@ -65,7 +65,7 @@ class Path:
             return None,None
 
 
-    def next_node_route(self, route=None) -> Map_point:
+    def next_node_route(self, route=None) -> List[Map_point]:
         point = self.start_point
         if route is None:
             route = [] 

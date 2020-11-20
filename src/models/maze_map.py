@@ -1,7 +1,7 @@
 import copy
 from .graph import Graph, Node
 from .maze_items import Location, Map_el, Map_point, Direction, Path
-from typing import List
+from typing import List,Dict
 import math
 
 
@@ -50,7 +50,7 @@ class Maze_map:
             all_points = all_points+row
         return all_points
 
-    def connected_nodes(self, node):
+    def connected_nodes(self, node: Node) -> List[Node]: 
         nodes = []
         for path in node.map_point.available_pathes:
             node_point = path.next_node_point()[0]
@@ -88,7 +88,7 @@ class Maze_map:
         return graph
     # NOTE why not use location as node id
 
-    def _connected_nodes(self, node: Node):
+    def _connected_nodes(self, node: Node) -> Dict[Node,int]:
         nodes_cost = {}
         available_pathes = node.map_point.available_pathes
         if available_pathes:

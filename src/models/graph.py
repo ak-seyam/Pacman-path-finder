@@ -1,5 +1,5 @@
 from .maze_items import Map_point
-from typing import List
+from typing import List,Dict
 
 
 class Node(object):
@@ -15,6 +15,24 @@ class Node(object):
         for edge in self.edges:
             if edge.node_to != self:
                 yield edge.node_to
+
+    def connected_nodes_route(self) -> Dict[int, List[Map_point]]:
+        ''' get points betwean node and its frontiers 
+        returns:
+            dictonary : [key : int the node id, value :List[Map_point]]
+        '''
+        nodes_route = {}
+        available_pathes = self.map_point.available_pathes
+        if available_pathes:
+            for path in available_pathes:
+                next_point, route = path.next_node_route()
+                if next_point:
+                    n = next_point.node_id
+                    if n is not None:
+                        nodes_route[n] = route
+
+        return nodes_route
+
 
     def __str__(self):
         if Map_point is not None:
