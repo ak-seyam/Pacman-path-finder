@@ -6,7 +6,7 @@ import json
 import dataclasses
 import pickle
 
-from algorithms.A_star import a_star, path_to_distance, a_star_one_target
+from algorithms.A_star import a_star, path_to_distance, a_star_one_target,path_to_points
 
 
 from enum import Enum
@@ -66,7 +66,7 @@ def map_sol():
     target_node = maze_map.get_node_by_map_point(maze_map.traget[0])
 
     path, cost = a_star_one_target(start_node, target_node)
-    points = [node.map_point for node in path]
+    points = path_to_points(path)
     return json.dumps(points , cls=EnhancedJSONEncoder)
 
 

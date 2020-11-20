@@ -16,6 +16,15 @@ canvas_nodes.setAttribute("height", height);
 document.body.appendChild(canvas_nodes);
 var ctx_nodes = canvas_nodes.getContext("2d");
 
+var canvas_path = document.createElement("canvas");
+canvas_path.setAttribute("width", width);
+canvas_path.setAttribute("height", height);
+document.body.appendChild(canvas_path);
+canvas_path.setAttribute("class", "back_canv");
+var ctx_path = canvas_path.getContext("2d");
+
+
+
 const options = {
   draw_wall: false,
   draw_target: false,
@@ -185,7 +194,7 @@ async function main() {
   draw_map(map_data, {draw_ids: true}, ctx_nodes);
   
   const sol_data = await fetch("http://127.0.0.1:5000/map/sol").then(res => res.json());
-  draw_path(map_data,sol_data, ctx_nodes)
+  draw_path(map_data, sol_data, ctx_path);
 }
 
 main();
