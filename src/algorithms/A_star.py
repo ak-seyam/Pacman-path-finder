@@ -115,8 +115,6 @@ def path_to_distance(list_nodes):
     ''' get the distance to go through the list nodes path'''
     distance = 0
     for i in range(1, len(list_nodes)):
-        if i ==31:
-            x=1
         distance += list_nodes[i-1].distance(list_nodes[i])
     return distance
 

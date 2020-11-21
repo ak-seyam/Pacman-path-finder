@@ -45,6 +45,14 @@ def hello():
     return 'hello'
 
 
+def multi_point_path(targets_dict):
+    path = []
+    for key in targets_dict:
+        path += targets_dict[key][:-1]
+
+    return path
+
+
 @app.route('/map/<int:maze_num>')
 def map(maze_num):
     maze = mazes[maze_num]
@@ -132,6 +140,27 @@ def map_sol_gfs(maze_num):
     return json.dumps({"points": points, "cost": distance}, cls=EnhancedJSONEncoder)
 
 
+            
+@app.route("/map/<int:maze_num>/sol/multi/gfs")
+def map_sol_multi(maze_num):
+    maze_map = mazes[maze_num]
+    starting_point = maze_map.get_node_by_map_point(maze_map.player).id
+    graph = maze_map.graph
+    sol = GFS_Solver(graph, starting_point)
+    informed_multi_target_solver(
+        GFS, graph, starting_point, maze_map, sol.solve, sol.steps_counter)
+
+    targets_dict = sol.get_path()
+    
+    for k in targets_dict.keys():
+        path_ids = targets_dict[k]
+        path = [maze_map.graph.nodes[id_] for id_ in path_ids]
+        points = path_to_points(path)
+        targets_dict[k] = points
+
+    targets_ordered = list(targets_dict.keys())
+    distance = path_to_distance(path)
+    return json.dumps({"points": targets_dict,"order":targets_ordered, "cost": distance}, cls=EnhancedJSONEncoder)
 
 # NOTE for map visit /index.html
 if __name__ == "__main__":

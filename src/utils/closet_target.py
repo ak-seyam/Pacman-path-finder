@@ -1,8 +1,7 @@
 from models.maze_map import Maze_map
-_visited_targets = list()
 
 
-def get_closest_target(current_position_id: int, maze_map: Maze_map) -> int:
+def get_closest_target(_visited_targets,current_position_id: int, maze_map: Maze_map) -> int:
     """
         Get ID of the closest node to the current node position id in the map
         Or return None if all nodes are visited

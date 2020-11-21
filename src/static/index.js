@@ -51,6 +51,7 @@ const element_types = {
   PLAYER: "PLAYER",
   TRAGET: "TRAGET",
   EMPTY: "EMPTY",
+  RANDOM : "RANDOM",
 };
 
 
@@ -116,7 +117,7 @@ function draw_path(points, canv) {
       point.location.y,
       step_x,
       step_y,
-      element_types.PLAYER,
+      element_types.RANDOM,
       canv
     );
   });
@@ -209,14 +210,41 @@ async function main() {
   // TODO support solution type
   const sol_selector = document.getElementById("sloution_method");
   const selected_sol = sol_selector[sol_selector.selectedIndex].value;
-  const sol_data = await fetch(
-    `http://127.0.0.1:5000/map/${map_id}/sol/${selected_sol}`
-  ).then((res) => res.json());
+  
+  let multi = false
+  
+  const multi_maps = [3,5,6,0]
+  for (let val in multi_maps) {
+    if (map_id == multi_maps[val]) {
+      multi = true;
+    }
+  }
+  
+  
+  
+  if (multi) {
+    var sol_data = await fetch(
+      `http://127.0.0.1:5000/map/${map_id}/sol/multi/${selected_sol}`
+    ).then((res) => res.json());
 
-  const points = sol_data.points;
-  const cost = sol_data.cost;
-  document.getElementById("distance_cost").innerHTML = "cost: "+cost;
-  draw_path(points, ctx_path);
+    const points_routes = sol_data.points;
+    const order = sol_data.order;
+    for (let i = 0; i < order.length; i++) {
+      const path_points = points_routes[order[i]];
+      
+      setTimeout(() => {
+        draw_path(path_points, ctx_path);
+      }, 500 * i);
+    }
+  } else {
+    var sol_data = await fetch(
+      `http://127.0.0.1:5000/map/${map_id}/sol/${selected_sol}`
+    ).then((res) => res.json());
+    const points = sol_data.points;
+    const cost = sol_data.cost;
+    document.getElementById("distance_cost").innerHTML = "cost: " + cost;
+    draw_path(points, ctx_path);
+  }
 }
 
 const map_selector = document.getElementById("map_selector");

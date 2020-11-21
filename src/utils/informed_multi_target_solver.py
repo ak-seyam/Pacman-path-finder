@@ -11,8 +11,12 @@ def informed_multi_target_solver(algorithm, graph: Graph,
     targets = maze_map.traget
     prev_target_id = starting_node_id
 
+
+    _visited_targets = list()
+
     for _ in range(len(targets)):
-        target_id = get_closest_target(prev_target_id, maze_map)
+        target_id = get_closest_target(
+            _visited_targets, prev_target_id, maze_map)
         if steps_counter != None:
             algorithm(graph, prev_target_id, target_id,
                       callback, steps_counter)
@@ -20,4 +24,4 @@ def informed_multi_target_solver(algorithm, graph: Graph,
             algorithm(graph, prev_target_id, target_id, callback)
         prev_target_id = target_id
 
-    clear_visited_targets()
+    _visited_targets =[]
