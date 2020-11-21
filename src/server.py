@@ -10,6 +10,9 @@ from algorithms.A_star import a_star, path_to_distance, a_star_one_target,path_t
 from algorithms.DFS import dfs_single_target
 from algorithms.BFS_sovler import BFS_Solver
 from algorithms.BFS import BFS
+from algorithms.GFS import GFS
+from algorithms.GFS_Solver import GFS_Solver
+from utils.informed_multi_target_solver import informed_multi_target_solver
 
 
 from enum import Enum
@@ -109,6 +112,24 @@ def map_sol_bfs(maze_num):
     points = path_to_points(path)
     return json.dumps({"points":points,"cost":distance}, cls=EnhancedJSONEncoder)
 
+
+@app.route("/map/<int:maze_num>/sol/gfs")
+def map_sol_gfs(maze_num):
+    maze_map = mazes[maze_num]
+    starting_point = maze_map.get_node_by_map_point(maze_map.player).id
+    graph = maze_map.graph
+    sol = GFS_Solver(graph, starting_point)
+    informed_multi_target_solver(
+        GFS, graph, starting_point, maze_map, sol.solve, sol.steps_counter)
+    
+    path_dict = sol.get_path()
+    
+    path_ids = path_dict[next(iter(path_dict))]
+    print(path_ids)
+    path = [maze_map.graph.nodes[id_] for id_ in path_ids]
+    distance = path_to_distance(path)
+    points = path_to_points(path)
+    return json.dumps({"points": points, "cost": distance}, cls=EnhancedJSONEncoder)
 
 
 
