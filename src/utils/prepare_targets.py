@@ -1,7 +1,8 @@
 from models.graph import Graph
 from algorithms.A_star import path_to_distance, parent_list_to_path
 
-def prepare_targets(maze_map, starting_node_id):
+def prepare_targets(maze_map, starting_node_id, remaining_targets_id):
+    '''returns the targets and thier costs as dict'''
     visited_nodes = set()
     graph = maze_map.graph
     
@@ -14,7 +15,12 @@ def prepare_targets(maze_map, starting_node_id):
         node = nodes_queue.pop(0)  # remove the first element, FIFO
         if node not in visited_nodes:
             visited_nodes.add(node)
-            if not graph.nodes[node].is_target():    
+            # not a target
+            # when its content is not target 
+            # ot it is target but not of the remaining
+            not_target_in_ctx = graph.nodes[node].is_target() and node not in remaining_targets_id
+            not_target_anyway = not graph.nodes[node].is_target()
+            if not_target_in_ctx or not_target_anyway:
                 connections = adjacency_dict.get(node)
                 if connections:
                     for connection in connections:

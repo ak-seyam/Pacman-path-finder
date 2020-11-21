@@ -1,7 +1,14 @@
 from .maze_items import Map_point
-from typing import List,Dict
+from typing import List,Dict,Set
 
 
+class TargetNode(object):
+    def __init__(self,current , remain: Set):
+        self.remain = remain
+        self.current = current
+
+    def __eql__(self, other):
+        return (self.remain == other.remain) and (self.current == other.current)
 class Node(object):
     def __init__(self, id: int, map_point: Map_point = None):
         self.id = id
