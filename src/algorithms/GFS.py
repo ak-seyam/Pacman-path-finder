@@ -30,6 +30,7 @@ def GFS(graph: Graph, starting_node_id, target_id, callback, steps_counter):
                 backtrack_index -= 2
                 current = visited_nodes[backtrack_index]
                 visited_nodes.append(visited_nodes[backtrack_index])
+                callback(graph.nodes[visited_nodes[backtrack_index]])
             callback(graph.nodes[current])
             children = [x[0] for x in _adjacency_dict[current]]
         next = get_the_closet_to_target_child(

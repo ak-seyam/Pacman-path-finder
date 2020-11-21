@@ -13,7 +13,7 @@ mazes = [
     'bigDots.txt', 'bigMaze.txt', 'mediumMaze.txt', 'mediumSearch.txt', 'openMaze.txt', 'smallSearch.txt', 'tinySearch.txt']
 
 
-# maze_map = Maze_map(f'Maze/{mazes[-1]}')
+# maze_map = Maze_map(f'Maze/{mazes[-2]}')
 
 # starting_point = maze_map.get_node_by_map_point(maze_map.player).id
 # print(maze_map)
