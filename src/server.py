@@ -7,6 +7,9 @@ import dataclasses
 import pickle
 
 from algorithms.A_star import a_star, path_to_distance, a_star_one_target,path_to_points
+from algorithms.DFS import dfs_single_target
+from algorithms.BFS_sovler import BFS_Solver
+from algorithms.BFS import BFS
 
 
 from enum import Enum
@@ -59,15 +62,54 @@ def map(maze_num):
     # return json.dumps(from_node.map_point.route_to_node_points(), cls=EnhancedJSONEncoder)
 
 
-@app.route("/map/<int:maze_num>/sol")
-def map_sol(maze_num):
+@app.route("/map/<int:maze_num>/sol/a_star")
+def map_sol_a_star(maze_num):
     maze_map = mazes[maze_num]
     start_node = maze_map.get_node_by_map_point(maze_map.player)
     target_node = maze_map.get_node_by_map_point(maze_map.traget[0])
 
     path, cost = a_star_one_target(start_node, target_node)
     points = path_to_points(path)
-    return json.dumps(points , cls=EnhancedJSONEncoder)
+    distance = path_to_distance(path)
+    return json.dumps({"points": points, "cost": distance}, cls=EnhancedJSONEncoder)
+
+
+@app.route("/map/<int:maze_num>/sol/dfs")
+def map_sol_dfs(maze_num):
+    maze_map = mazes[maze_num]
+
+    adjc_dict = maze_map.graph.get_adjacency_dict()
+    start_node = maze_map.get_node_by_map_point(maze_map.player)
+    target_node = maze_map.get_node_by_map_point(maze_map.traget[0])
+
+    path_ids = dfs_single_target(start_node.id, target_node.id, adjc_dict)
+    
+    path = [maze_map.graph.nodes[id_] for id_ in path_ids]
+    # cost  = path_to_distance(path)
+    route = path_to_points(path)
+    distance = path_to_distance(path)
+
+    points = route
+    return json.dumps({"points": points, "cost": distance}, cls=EnhancedJSONEncoder)
+
+
+@app.route("/map/<int:maze_num>/sol/bfs")
+def map_sol_bfs(maze_num):
+    maze_map = mazes[maze_num]
+    starting_point = maze_map.get_node_by_map_point(maze_map.player).id
+
+    sol = BFS_Solver(starting_point, maze_map.graph, maze_map)
+    BFS(maze_map.graph, starting_point, sol.solver, sol.steps_counter)
+
+    path_dict = sol.get_result()
+    path_ids = path_dict[next(iter(path_dict))]
+    path = [maze_map.graph.nodes[id_] for id_ in path_ids]
+
+    distance = path_to_distance(path)
+    points = path_to_points(path)
+    return json.dumps({"points":points,"cost":distance}, cls=EnhancedJSONEncoder)
+
+
 
 
 # NOTE for map visit /index.html

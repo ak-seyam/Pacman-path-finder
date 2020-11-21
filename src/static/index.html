@@ -30,6 +30,19 @@
         <option value="0">bigDots</option>
       </optgroup>
     </select>
+
+    <select name="sloution_method" id="sloution_method">
+      <optgroup label="one_target">
+        <option value="a_star" selected>a star</option>
+        <option value="dfs">depth first</option>
+        <option value="bfs">breadth first</option>
+      </optgroup>
+
+    </select>
+
+    <h1 id="distance_cost">cost: 0</h1>
+
+
     <div id="canvas_container"></div>
     <script type="module" src="./index.js"></script>
   </body>

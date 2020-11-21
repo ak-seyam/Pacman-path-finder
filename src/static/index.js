@@ -109,7 +109,7 @@ function get_point_by_node_id(maze_map, node_id) {
     }
   }
 }
-function draw_path(map_data, points, canv) {
+function draw_path(points, canv) {
   points.forEach((point) => {
     draw_map_element_arc(
       point.location.x,
@@ -202,15 +202,31 @@ async function main() {
   
   // draw_ids
   draw_map(map_data, {draw_ids: true}, ctx_nodes);
+
   
+
+
+  // TODO support solution type
+  const sol_selector = document.getElementById("sloution_method");
+  const selected_sol = sol_selector[sol_selector.selectedIndex].value;
   const sol_data = await fetch(
-    `http://127.0.0.1:5000/map/${map_id}/sol`
+    `http://127.0.0.1:5000/map/${map_id}/sol/${selected_sol}`
   ).then((res) => res.json());
-  draw_path(map_data, sol_data, ctx_path);
+
+  const points = sol_data.points;
+  const cost = sol_data.cost;
+  document.getElementById("distance_cost").innerHTML = "cost: "+cost;
+  draw_path(points, ctx_path);
 }
 
-const selector = document.getElementById("map_selector");
-selector.addEventListener("change", () => {
+const map_selector = document.getElementById("map_selector");
+const sol_selector = document.getElementById("sloution_method");
+
+map_selector.addEventListener("change", () => {
   main();
 });
+sol_selector.addEventListener("change", () => {
+  main();
+})
+
 main();
