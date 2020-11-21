@@ -13,6 +13,12 @@ def expand_id_generator():
 
 
 def a_star_one_target(start_node, end_node):
+    path = a_star_one_target_path_only(start_node, end_node)
+    distance = path_to_distance(path)
+    return path, distance 
+
+
+def a_star_one_target_path_only(start_node, end_node):
     exp_gen = expand_id_generator()
     
     node_parent_distance = {start_node: (None,0)}  # node : (parent,distance)
@@ -60,7 +66,7 @@ def a_star_one_target(start_node, end_node):
     visited_nodes.append(current_node)
     # path = expan_to_path(visited_nodes)
     path = parent_list_distance_to_path(node_parent_distance, end_node)
-    return path, path_to_distance(path)
+    return path
 
 
 def parent_list_to_path(node_parent,node):

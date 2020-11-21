@@ -232,6 +232,11 @@ async function main() {
 
     const points_routes = sol_data.points;
     const order = sol_data.order;
+    
+    // update cost
+    const cost = sol_data.cost;
+    document.getElementById("distance_cost").innerHTML = "cost: " + cost;
+    
     for (let i = 0; i < order.length; i++) {
       const path_points = points_routes[order[i]];
       

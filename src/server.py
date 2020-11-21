@@ -13,6 +13,7 @@ from algorithms.BFS import BFS
 from algorithms.GFS import GFS
 from algorithms.GFS_Solver import GFS_Solver
 from utils.informed_multi_target_solver import informed_multi_target_solver
+from algorithms.multi_target import a_star_multi_target
 
 
 from enum import Enum
@@ -43,14 +44,6 @@ class EnhancedJSONEncoder(json.JSONEncoder):
 @app.route('/')
 def hello():
     return 'hello'
-
-
-def multi_point_path(targets_dict):
-    path = []
-    for key in targets_dict:
-        path += targets_dict[key][:-1]
-
-    return path
 
 
 @app.route('/map/<int:maze_num>')
@@ -140,7 +133,15 @@ def map_sol_gfs(maze_num):
     return json.dumps({"points": points, "cost": distance}, cls=EnhancedJSONEncoder)
 
 
-            
+def multi_point_path(targets_dict):
+    path = []
+    for key in targets_dict:
+        path += targets_dict[key][:-1]
+
+    return path
+
+
+
 @app.route("/map/<int:maze_num>/sol/multi/gfs")
 def map_sol_multi(maze_num):
     maze_map = mazes[maze_num]
@@ -151,16 +152,45 @@ def map_sol_multi(maze_num):
         GFS, graph, starting_point, maze_map, sol.solve, sol.steps_counter)
 
     targets_dict = sol.get_path()
-    
+
+    targets_ordered = list(targets_dict.keys())
+
+    distance = sol.res_path_cost()
+
+    #convert to points
     for k in targets_dict.keys():
         path_ids = targets_dict[k]
         path = [maze_map.graph.nodes[id_] for id_ in path_ids]
         points = path_to_points(path)
         targets_dict[k] = points
 
-    targets_ordered = list(targets_dict.keys())
-    distance = path_to_distance(path)
+
     return json.dumps({"points": targets_dict,"order":targets_ordered, "cost": distance}, cls=EnhancedJSONEncoder)
+
+
+@app.route("/map/<int:maze_num>/sol/multi/a_star")
+def map_sol_multi_a_star(maze_num):
+    maze_map = mazes[maze_num]
+    starting_point = maze_map.get_node_by_map_point(maze_map.player).id
+
+    targets_dict = a_star_multi_target(maze_map, maze_map.player.node_id)
+
+    targets_ordered = list(targets_dict.keys())
+    path = multi_point_path(targets_dict)
+    res_nodes = [maze_map.graph.nodes[id_] for id_ in path]
+    distance = path_to_distance(res_nodes)
+
+    #convert to points
+    for k in targets_dict.keys():
+        path_ids = targets_dict[k]
+        path = [maze_map.graph.nodes[id_] for id_ in path_ids]
+        points = path_to_points(path)
+        targets_dict[k] = points
+
+    return json.dumps({"points": targets_dict, "order": targets_ordered, "cost": distance}, cls=EnhancedJSONEncoder)
+
+
+
 
 # NOTE for map visit /index.html
 if __name__ == "__main__":

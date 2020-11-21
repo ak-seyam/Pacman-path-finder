@@ -1,5 +1,5 @@
 from utils.prepare_targets import prepare_targets
-from algorithms.A_star import parent_list_distance_to_path
+from algorithms.A_star import parent_list_distance_to_path, path_to_distance, a_star_one_target_path_only
 from models import TargetNode
 
 def a_star_multi_target(maze_map, starting_node_id):
@@ -16,12 +16,13 @@ def a_star_multi_target(maze_map, starting_node_id):
     for target_node in target_nodes:
         distance += target_node.heuristics(current_node)
 
-    avg_distance = distance / len(maze_map.traget)
-    # avg_distance = 1000
+    # avg_distance = len(maze_map.layout)
+    avg_distance = distance / len(maze_map.layout)
+    # avg_distance = 5
 
     current_state = TargetNode(current_node_id, target_nodes_id)
     
-    
+    smallest_remain = len(current_state.remain)
 
     # TargetNode : (parent,distance_to_node)
     state_parent_distance = {current_state: (None, 0)}
@@ -35,10 +36,18 @@ def a_star_multi_target(maze_map, starting_node_id):
             if target_id in current_state.remain :
                 new_remain = current_state.remain.copy()
                 new_remain.remove(target_id)
-                
+
                 possible_states.append(TargetNode(
                     target_id, new_remain))
-            
+
+                start_node = maze_map.graph.nodes[current_state.current]
+                end_node = maze_map.graph.nodes[target_id]
+
+                connected_targets_cost[target_id] = path_to_distance(
+                    a_star_one_target_path_only(start_node, end_node))
+        
+        
+        
 
 
         # parent, parent_distance = state_parent_distance[current_state]
@@ -49,9 +58,19 @@ def a_star_multi_target(maze_map, starting_node_id):
             if state not in visited:
                 distance = distance_to_current_state + connected_targets_cost[state.current]
                 # target_node = maze_map.graph.nodes[state.current]
-                # current_node = maze_map.graph.nodes[current_state.current]
+                # current_node = maze_map.graph.nodes[state.current]
+                # target_nodes = []
+                # for target in state.remain:
+                #     target_nodes.append(maze_map.graph.nodes[target])
+                
+                # heuristics = 0
+                # for target in target_nodes:
+                    # heuristics += target.heuristics(current_node)
+
                 # heuristics = current_node.heuristics(target_node)
                 heuristics = len(state.remain)*avg_distance
+
+                # from point to all other remains
                 cost = distance + heuristics
 
                 old_cost = cost_value.get(state,None)
@@ -67,8 +86,19 @@ def a_star_multi_target(maze_map, starting_node_id):
         cost_value.pop(current_state, None)
         visited.append(current_state)
 
-        if len(current_state.remain) < 1:
-            print("small")
+        # dump_progress
+        # if len(current_state.remain) < smallest_remain:
+        #     print(len(current_state.remain))
+        #     smallest_remain = len(current_state.remain)
+
+        # if (len(cost_value)+1) % 1000 == 0:
+        #     copy_cost = cost_value.copy()
+
+            # for k in cost_value.keys():
+            #     if len(k.remain) > smallest_remain:
+            #         del copy_cost[k]
+            
+            # cost_value = copy_cost
         # if len(cost_value) == 0:
             # return None
         current_state =  min(
@@ -80,7 +110,24 @@ def a_star_multi_target(maze_map, starting_node_id):
     path_node_id = []
     for t_node in path:
         path_node_id.append(t_node.current)
-    return path_node_id
+
+    return targets_to_nodes(maze_map, path_node_id, starting_node_id)
+
+def targets_to_nodes(maze_map,targets_id,start_node_id):
+    path_dict = {}
+    targets_id.reverse()
+    
+    for i in range(1, len(targets_id)):
+        start_node = maze_map.graph.nodes[targets_id[i-1]]
+        end_node = maze_map.graph.nodes[targets_id[i]]
+        path = a_star_one_target_path_only(start_node, end_node)
+        path = [n.id for n in path]
+        path.reverse()
+        path_dict[targets_id[i]] = path
+    
+    return path_dict
+
+
 
 
 def GFS_multi(maze_map, starting_node_id: int):
