@@ -3,6 +3,8 @@ import {
   draw_map_element,
   draw_node_id,
   draw_map_element_arc,
+  getRandomColor,
+  element_colors,
 } from "./drawer.js";
 
 const step_x = 50,step_y =50
@@ -110,14 +112,15 @@ function get_point_by_node_id(maze_map, node_id) {
     }
   }
 }
-function draw_path(points, canv) {
+function draw_path(points, canv,color) {
+  color = color ? color : element_colors.PLAYER;
   points.forEach((point) => {
     draw_map_element_arc(
       point.location.x,
       point.location.y,
       step_x,
       step_y,
-      element_types.RANDOM,
+      color,
       canv
     );
   });
@@ -233,8 +236,8 @@ async function main() {
       const path_points = points_routes[order[i]];
       
       setTimeout(() => {
-        draw_path(path_points, ctx_path);
-      }, 500 * i);
+        draw_path(path_points, ctx_path, getRandomColor());
+      }, 1000 * i);
     }
   } else {
     var sol_data = await fetch(
