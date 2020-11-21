@@ -28,7 +28,7 @@ mazes = [
 # print('#hits: ', sol.num_hits)
 # print('total cost', sol.res_path_cost())
 
-# print(prepare_targets(graph, maze_map.player.node_id))
+# print(prepare_targets(maze_map, maze_map.player.node_id))
 # print('------------------------------')
 
 # BFS solution 
