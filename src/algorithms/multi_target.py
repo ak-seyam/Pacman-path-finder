@@ -113,7 +113,8 @@ def a_star_multi_target(maze_map, starting_node_id):
 
     return targets_to_nodes(maze_map, path_node_id, starting_node_id)
 
-def targets_to_nodes(maze_map,targets_id,start_node_id):
+def targets_to_nodes(maze_map,targets_id: List[int],start_node_id):
+    ''' find the path betwean target nodes with a_star'''
     path_dict = {}
     targets_id.reverse()
     
