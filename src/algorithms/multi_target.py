@@ -1,6 +1,7 @@
 from utils.prepare_targets import prepare_targets
 from algorithms.A_star import parent_list_distance_to_path, path_to_distance, a_star_one_target_path_only
 from models import TargetNode
+from typing import List
 
 def a_star_multi_target(maze_map, starting_node_id):
     current_node_id = starting_node_id
