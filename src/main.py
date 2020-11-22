@@ -7,7 +7,7 @@ from algorithms.BFS_sovler import BFS_Solver
 from utils.informed_multi_target_solver import informed_multi_target_solver
 from utils.prepare_targets import prepare_targets
 # from algorithms.A_star import a_star, path_to_distance, a_star_one_target, path_to_points
-from utils.search import search_type ,search
+from utils.search import search_type ,search_path, search
 
 
 mazes = [
@@ -16,8 +16,9 @@ mazes = [
 
 maze_map = Maze_map(f'Maze/{mazes[-1]}')
 
-search(search_type.GFS,maze_map)
+s = search(search_type.BFS, maze_map)
 
+print(s.get_path())
 # starting_point = maze_map.get_node_by_map_point(maze_map.player).id
 # print(maze_map)
 
