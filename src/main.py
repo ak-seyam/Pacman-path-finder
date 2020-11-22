@@ -6,27 +6,30 @@ from algorithms.GFS_Solver import GFS_Solver
 from algorithms.BFS_sovler import BFS_Solver
 from utils.informed_multi_target_solver import informed_multi_target_solver
 from utils.prepare_targets import prepare_targets
-from algorithms.A_star import a_star, path_to_distance, a_star_one_target, path_to_points
+# from algorithms.A_star import a_star, path_to_distance, a_star_one_target, path_to_points
+from utils.search import search_type ,search
 
 
 mazes = [
     'bigDots.txt', 'bigMaze.txt', 'mediumMaze.txt', 'mediumSearch.txt', 'openMaze.txt', 'smallSearch.txt', 'tinySearch.txt']
 
 
-maze_map = Maze_map(f'Maze/{mazes[-3]}')
+maze_map = Maze_map(f'Maze/{mazes[-1]}')
 
-starting_point = maze_map.get_node_by_map_point(maze_map.player).id
-print(maze_map)
+search(search_type.GFS,maze_map)
 
-# GFS solver
-graph = maze_map.graph
-sol = GFS_Solver(graph, starting_point)
-informed_multi_target_solver(
-    GFS, graph, starting_point, maze_map, sol.solve, sol.steps_counter)
-print('result path', sol.get_path())
-print('result expansion', sol.expansion)
-print('#hits: ', sol.num_hits)
-print('total cost', sol.res_path_cost())
+# starting_point = maze_map.get_node_by_map_point(maze_map.player).id
+# print(maze_map)
+
+# # GFS solver
+# graph = maze_map.graph
+# sol = GFS_Solver(graph, starting_point)
+# informed_multi_target_solver(
+#     GFS, graph, starting_point, maze_map, sol.solve, sol.steps_counter)
+# print('result path', sol.get_path())
+# print('result expansion', sol.expansion)
+# print('#hits: ', sol.num_hits)
+# print('total cost', sol.res_path_cost())
 
 # print(prepare_targets(maze_map, maze_map.player.node_id))
 # print('------------------------------')

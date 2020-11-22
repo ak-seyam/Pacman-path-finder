@@ -22,8 +22,10 @@ def search(algorithm:search_type, maze_map:Maze_map, log:bool= True):
         start_node_id = maze_map._get_node_by_location(player_point.location).id
 
         moving_map = DFS(maze_map.graph, start_node_id)
-        for k in moving_map.keys():
-            print(k, moving_map[k])
+        if log:
+            for k in moving_map.keys():
+                print(k, moving_map[k])
+        return moving_map
 
     elif algorithm == search_type.A_Star:
         # TODO ask abdo about log

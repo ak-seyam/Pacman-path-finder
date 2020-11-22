@@ -87,10 +87,6 @@ def parent_list_distance_to_path(node_parent,node):
 
     return parent_list_to_path(node_parent, node)
 
-
-
-
-
 def path_to_distance(list_nodes):
     ''' get the distance to go through the list nodes path'''
     distance = 0
