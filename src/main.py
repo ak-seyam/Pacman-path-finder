@@ -6,7 +6,8 @@ from algorithms.GFS_Solver import GFS_Solver
 from algorithms.BFS_sovler import BFS_Solver
 from utils.informed_multi_target_solver import informed_multi_target_solver
 from utils.prepare_targets import prepare_targets
-from algorithms.A_star import a_star, path_to_distance, a_star_one_target, path_to_points
+from algorithms.A_star import  path_to_distance, a_star_one_target, path_to_points
+from algorithms.multi_target import a_star_multi_target
 
 
 mazes = [
