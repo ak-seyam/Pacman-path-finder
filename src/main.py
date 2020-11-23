@@ -38,12 +38,15 @@ def multi_point_path(targets_dict):
 # sol = GFS_Solver(graph, starting_point)
 # informed_multi_target_solver(
 #     GFS, graph, starting_point, maze_map, sol.solve, sol.steps_counter)
-# print('result path', sol.get_path())
+# print('gready', sol.get_path())
+# print('path', multi_point_path(sol.get_path()))
 # print('result expansion', sol.expansion)
 # print('#hits: ', sol.num_hits)
 # print('total cost', sol.res_path_cost())
 
-# print(prepare_targets(maze_map, maze_map.player.node_id))
+# targets_ids = [t.node_id for t in maze_map.traget]
+# print(prepare_targets(maze_map, 0, [15,20,2,8,19]))
+# >>> {2: 0, 8: 1, 19: 3, 15: 4} for tiny
 # print('------------------------------')
 
 # BFS solution 
