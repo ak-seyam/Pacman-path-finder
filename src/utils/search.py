@@ -6,6 +6,8 @@ from utils.informed_multi_target_solver import informed_multi_target_solver
 from algorithms.GFS import GFS
 from algorithms.BFS import BFS
 from algorithms.multi_target import a_star_multi_target
+from algorithms.DFS import DFS
+from utils.path_utils import multi_point_path, path_id_to_distance, path_to_distance
 
 
 class search_type(enum.Enum):
@@ -26,6 +28,14 @@ class search():
             self.starting_point, self.graph, self.maze_map)
         self.gfs_sol = GFS_Solver(
             self.graph, self.starting_point)
+        try: # for dfs and a*
+            self.moving_map,self.visited = self.get_path()
+        except: # for gfs and bfs
+            self.moving_map = self.get_path()
+            self.visited = self.get_expansion()
+
+        self.path_ids = multi_point_path(self.moving_map)
+        self.cost = path_id_to_distance(self.maze_map, self.path_ids)
         # for gfs and bfs we shall solve them to use the
 
     def get_path(self, log: bool = False):
@@ -43,11 +53,11 @@ class search():
 
         if self.algorithm == search_type.DFS:
             # NOTE abdo should check this error
-            moving_map = DFS(self.maze_map.graph, self.starting_point)
+            moving_map,visited = DFS(self.maze_map.graph, self.starting_point)
             if log:
                 for k in moving_map.keys():
                     print(k, moving_map[k])
-            return moving_map
+            return moving_map,visited
 
         elif self.algorithm == search_type.A_Star:
             return a_star_multi_target(self.maze_map, self.maze_map.player.node_id)
@@ -82,8 +92,8 @@ class search():
             # NOTE abdo should add A_Star cost here
             pass
         elif self.algorithm == search_type.DFS:
-            # NOTE abdo should add DFS cost here
-            pass
+            # WARN i am solving again for get cost may use path instead
+            return self.cost
         elif self.algorithm == search_type.BFS:
             # TODO cache sol results for BFS and GFS
             return self.bfs_sol.res_path_cost()
@@ -98,7 +108,7 @@ class search():
             # NOTE abdo should add A_Star expansion here
             pass
         elif self.algorithm == search_type.DFS:
-            # NOTE abdo should add DFS expansion here
+            return self.visited
             pass
         elif self.algorithm == search_type.BFS:
             return self.bfs_sol.expansion
@@ -107,11 +117,10 @@ class search():
 
     def get_number_of_expanded_nodes(self):
         if self.algorithm == search_type.A_Star:
-            # NOTE abdo should add A_Star #expansion here
-            pass
-        elif self.algorithm == search_type.DFS:
             # NOTE abdo should add DFS #expansion here
             pass
+        elif self.algorithm == search_type.DFS:
+            return len(self.visited)
         elif self.algorithm == search_type.BFS:
             # TODO cache sol results for BFS and GFS
             return self.bfs_sol.num_hits

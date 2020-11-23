@@ -17,7 +17,12 @@ mazes = [
 maze_map = Maze_map(f'Maze/{mazes[-1]}')
 
 # NOTE testing common search logic
-s = search(search_type.GFS, maze_map)
+# s = search(search_type.GFS, maze_map)
+# s = search(search_type.DFS, maze_map) #TODO fix for multi-target search
+# s = search(search_type.GFS, maze_map)
+# s = search(search_type.GFS, maze_map)
+
+
 
 print(s.get_path())
 print(s.get_cost())

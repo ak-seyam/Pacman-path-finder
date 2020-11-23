@@ -2,27 +2,30 @@ from models.graph import Graph
 from utils.graph_preprocessor import graph_algorithm
 from typing import Callable
 from algorithms.A_star import path_to_distance, parent_list_to_path
-# TODO: try to make a generic BFS
+
 # @graph_algorithm()
-# def DFS(graph: Graph, starting_node_id):
-    # """ Do a DFS over a graph """
-    # target_node_ids = [node.id for node in graph.nodes if node.is_target()]
-    # adjacency_dict = graph.get_adjacency_dict()
-    # return lazyDFS_many(starting_node_id, target_node_ids, adjacency_dict)
+def DFS(graph: Graph, starting_node_id):
+    """ Do a DFS over a graph """
+    target_node_ids = [node.id for node in graph.nodes if node.is_target()]
+    adjacency_dict = graph.get_adjacency_dict()
+    return lazyDFS_many(starting_node_id, target_node_ids, adjacency_dict)
 
 
-# def lazyDFS_many(starting_node_id, target_node_ids, adjacency_dict):
-#     moving_map = {}
-#     while target_node_ids:
-#         target_id, visited_nodes = find_next_target(
-#             starting_node_id, target_node_ids, adjacency_dict)
-#         # start at it next time and remove from targets
-#         starting_node_id = target_id
-#         target_node_ids.remove(target_id)
-#         # add node to dict
-#         moving_map[target_id] = visited_nodes
+def lazyDFS_many(starting_node_id, target_node_ids, adjacency_dict):
+    moving_map = {}
+    visited = []
+    while target_node_ids:
+        path, visited_nodes = find_next_target(
+            starting_node_id, target_node_ids, adjacency_dict)
+        visited.append(visited_nodes)
+        target_id = path[0]
+        # start at it next time and remove from targets
+        starting_node_id = target_id
+        target_node_ids.remove(target_id)
+        # add node to dict
+        moving_map[target_id] = path
 
-#     return moving_map
+    return moving_map,visited[0]
 
 # def uniformed_serch(starting_node_id, target_node_ids, adjacency_dict):
 #     visited_nodes = list()  # i need to keep track of the order
@@ -42,7 +45,19 @@ from algorithms.A_star import path_to_distance, parent_list_to_path
 #                     nodes_stack.append(connection[0])
 
 
+def find_next_target(starting_node_id, target_node_ids, adjacency_dict):
+    def traget_locator(node_id): return node_id in target_node_ids
+    return dfs_generic(starting_node_id, traget_locator, adjacency_dict)
+
+
+
 def dfs_single_target(starting_node_id, target_node_id, adjacency_dict):
+    '''support legacy'''
+    return dfs_single_target_with_visited_nodes(
+        starting_node_id, target_node_id, adjacency_dict)[0]
+
+
+def dfs_single_target_with_visited_nodes(starting_node_id, target_node_id, adjacency_dict):
     traget_locator = lambda node_id: node_id == target_node_id
     return dfs_generic(starting_node_id, traget_locator, adjacency_dict)
 
@@ -73,4 +88,4 @@ def dfs_generic(starting_node_id, traget_locator: Callable, adjacency_dict):
             
     
     path = parent_list_to_path(node_parent,node_id)
-    return path
+    return path, visited_nodes
