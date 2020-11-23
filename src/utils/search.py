@@ -28,18 +28,20 @@ class search():
             self.starting_point, self.graph, self.maze_map)
         self.gfs_sol = GFS_Solver(
             self.graph, self.starting_point)
+        self._sol_clean = True
+
         if algorithm == search_type.DFS or algorithm == search_type.A_Star:
             self.moving_map,self.visited = self.get_path()
         else:
             self.moving_map = self.get_path()
             self.visited = self.get_expansion()
-        self._sol_clean = True
 
         self.path_ids = multi_point_path(self.moving_map)
         self.cost = path_id_to_distance(self.maze_map, self.path_ids)
         # for gfs and bfs we shall solve them to use the
     
     def clean(self):
+        self._sol_clean = True
         self.bfs_sol.clean()
         self.gfs_sol.clean()
 
@@ -76,10 +78,13 @@ class search():
                 res = self.bfs_sol.get_result()
                 return res
             else :
-                raise Exception("you should clean BFS cache before using it again!")
+                self.clean()
+                self.get_path()
+
 
         elif self.algorithm == search_type.GFS:
             if self._sol_clean:
+                self._sol_clean = False
                 informed_multi_target_solver(
                     GFS, self.graph, self.starting_point, self.maze_map,
                     self.gfs_sol.solve, self.gfs_sol.steps_counter)
@@ -87,7 +92,9 @@ class search():
                 res = self.gfs_sol.get_path()
                 return res
             else : 
-                raise Exception("you should clean GFS cache before using it again!")
+                # raise Exception("you should clean GFS cache before using it again!")
+                self.clean()
+                self.get_path()
 
     def get_cost(self):
         if self.algorithm == search_type.A_Star:

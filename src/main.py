@@ -14,10 +14,10 @@ mazes = [
     'bigDots.txt', 'bigMaze.txt', 'mediumMaze.txt', 'mediumSearch.txt', 'openMaze.txt', 'smallSearch.txt', 'tinySearch.txt']
 
 
-maze_map = Maze_map(f'Maze/{mazes[-1]}')
+maze_map = Maze_map(f'Maze/{mazes[4]}')
 
 # NOTE testing common search logic
-# s = search(search_type.GFS, maze_map)
+s = search(search_type.GFS, maze_map)
 # s = search(search_type.DFS, maze_map) #TODO fix for multi-target search
 # s = search(search_type.GFS, maze_map)
 # s = search(search_type.GFS, maze_map)
