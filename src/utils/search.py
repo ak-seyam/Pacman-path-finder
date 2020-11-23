@@ -22,7 +22,7 @@ class search():
         self.graph = maze_map.graph
         self.starting_point = maze_map.get_node_by_map_point(
             maze_map.player).id
-
+        # for gfs and bfs we shall solve them to use the 
     def get_path(self, log: bool = False):
 
         if self.algorithm == search_type.DFS:
@@ -59,3 +59,15 @@ class search():
                 print('#hits: ', sol.num_hits)
                 print('total cost', sol.res_path_cost())
             return sol.get_path()
+
+    def get_cost(self):
+        if self.algorithm == search_type.A_Star:
+            # NOTE abdo should add A_Star cost here
+            pass
+        elif self.algorithm == search_type.DFS:
+            # NOTE abdo should add DFS cost here
+            pass
+        elif self.algorithm == search_type.BFS:
+            # TODO cache sol results for BFS and GFS
+            pass
+
