@@ -8,8 +8,10 @@ class GFS_Solver():
         self._temp_list = []
         self.expansion = []
         self.num_hits = 0
+        self.starting_point = starting_point
         self._visited_pois = [starting_point]
         self.graph = graph
+
     def solve(self, node: Node):
         id = node.id
         self.expansion.append(id)
@@ -20,6 +22,13 @@ class GFS_Solver():
         if node.is_target() and id not in list(self._path.keys()):
             self._path[id] = self._temp_list[:]
             self._temp_list = []
+
+    def clean(self):
+        self._path = {}
+        self._temp_list = []
+        self.expansion = []
+        self.num_hits = 0
+        self._visited_pois = [self.starting_point]
 
     def get_path(self):
         return self._path
