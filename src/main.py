@@ -16,9 +16,14 @@ mazes = [
 
 maze_map = Maze_map(f'Maze/{mazes[-1]}')
 
-s = search(search_type.BFS, maze_map)
+# NOTE testing common search logic
+s = search(search_type.GFS, maze_map)
 
 print(s.get_path())
+print(s.get_cost())
+print(s.get_expansion())
+print(s.get_number_of_expanded_nodes())
+
 # starting_point = maze_map.get_node_by_map_point(maze_map.player).id
 # print(maze_map)
 
