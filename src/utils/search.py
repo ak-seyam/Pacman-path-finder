@@ -28,9 +28,9 @@ class search():
             self.starting_point, self.graph, self.maze_map)
         self.gfs_sol = GFS_Solver(
             self.graph, self.starting_point)
-        try: # for dfs and a*
+        if algorithm == search_type.DFS or algorithm == search_type.A_Star:
             self.moving_map,self.visited = self.get_path()
-        except: # for gfs and bfs
+        else:
             self.moving_map = self.get_path()
             self.visited = self.get_expansion()
 
