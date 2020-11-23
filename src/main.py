@@ -13,9 +13,23 @@ mazes = [
     'bigDots.txt', 'bigMaze.txt', 'mediumMaze.txt', 'mediumSearch.txt', 'openMaze.txt', 'smallSearch.txt', 'tinySearch.txt']
 
 
+def multi_point_path(targets_dict):
+    path = []
+    for key in targets_dict:
+        path += targets_dict[key][:-1]
+
+    return path
+
 # maze_map = Maze_map(f'Maze/{mazes[-2]}')
 
 # starting_point = maze_map.get_node_by_map_point(maze_map.player).id
+# res = a_star_multi_target(maze_map , maze_map.player.node_id)
+# print('a_star ',res)
+# path = multi_point_path(res)
+# print('path', path)
+# res_nodes = [maze_map.graph.nodes[id_] for id_ in path]
+# print("cost", path_to_distance(res_nodes))
+
 # print(maze_map)
 
 # GFS solver
