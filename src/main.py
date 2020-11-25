@@ -14,17 +14,18 @@ mazes = [
     'bigDots.txt', 'bigMaze.txt', 'mediumMaze.txt', 'mediumSearch.txt', 'openMaze.txt', 'smallSearch.txt', 'tinySearch.txt']
 
 
-maze_map = Maze_map(f'Maze/{mazes[4]}')
 
 # NOTE testing common search logic
 for i in search_type:
-    print("Testing...")
-    print('search type is: ',i)
-    s = search(i, maze_map)
-    print(s.get_path())
-    print(s.get_cost())
-    print(s.get_expansion())
-    print(s.get_number_of_expanded_nodes())
+    for j in range(7):
+        maze_map = Maze_map(f'Maze/{mazes[j]}')
+        print("Testing...")
+        print('search type is: ',i)
+        s = search(i, maze_map)
+        print(s.get_path())
+        print(s.get_cost())
+        print(s.get_expansion())
+        print(s.get_number_of_expanded_nodes())
 
 
 
