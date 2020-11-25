@@ -10,14 +10,17 @@ from utils.prepare_targets import prepare_targets
 from utils.search import search_type, search
 
 
+# mazes = [
+#     'bigDots.txt', 'bigMaze.txt', 'mediumMaze.txt', 'mediumSearch.txt', 'openMaze.txt', 'smallSearch.txt', 'tinySearch.txt']
+
 mazes = [
-    'bigDots.txt', 'bigMaze.txt', 'mediumMaze.txt', 'mediumSearch.txt', 'openMaze.txt', 'smallSearch.txt', 'tinySearch.txt']
-
-
+    'bigMaze.txt', 'mediumMaze.txt', 'openMaze.txt', 'bigDots.txt','mediumSearch.txt', 'smallSearch.txt', 'tinySearch.txt']
 
 # NOTE testing common search logic
 for i in search_type:
     for j in range(7):
+        if j > 2 and i == search_type.DFS:
+            break
         maze_map = Maze_map(f'Maze/{mazes[j]}')
         print("Testing...")
         print('search type is: ',i)
