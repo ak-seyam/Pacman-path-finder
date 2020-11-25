@@ -39,14 +39,14 @@ class search():
             self.moving_map, self.visited = a_star_multi_target(
                 self.maze_map, self.maze_map.player.node_id)
         
-        else:
-            self.moving_map = self.get_path()
-            self.visited = self.get_expansion()
+        # else:
+        #     self.moving_map = self.get_path()
+        #     self.visited = self.get_expansion()
 
 
 
-        self.path_ids = multi_point_path(self.moving_map)
-        self.cost = path_id_to_distance(self.maze_map, self.path_ids)
+        # self.path_ids = multi_point_path(self.moving_map)
+        # self.cost = path_id_to_distance(self.maze_map, self.path_ids)
         # for gfs and bfs we shall solve them to use the
     
     def clean(self):
@@ -107,12 +107,15 @@ class search():
                 self.get_path()
 
     def get_cost(self):
-        if self.algorithm == search_type.A_Star:
-            # NOTE abdo should add A_Star cost here
-            return self.cost
-        elif self.algorithm == search_type.DFS:
-            # WARN i am solving again for get cost may use path instead
-            return self.cost
+        if self.algorithm == search_type.A_Star or self.algorithm == search_type.DFS :
+            self.path_ids = multi_point_path(self.moving_map)
+            self.cost = path_id_to_distance(self.maze_map, self.path_ids)
+            if self.algorithm == search_type.A_Star:
+                # NOTE abdo should add A_Star cost here
+                return self.cost
+            elif self.algorithm == search_type.DFS:
+                # WARN i am solving again for get cost may use path instead
+                return self.cost
         elif self.algorithm == search_type.BFS:
             # TODO cache sol results for BFS and GFS
             return self.bfs_sol.res_path_cost()
