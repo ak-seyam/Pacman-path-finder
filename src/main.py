@@ -6,10 +6,15 @@ from algorithms.GFS_Solver import GFS_Solver
 from algorithms.BFS_sovler import BFS_Solver
 from utils.informed_multi_target_solver import informed_multi_target_solver
 from utils.prepare_targets import prepare_targets
-from algorithms.A_star import  path_to_distance, a_star_one_target, path_to_points
+from algorithms.A_star import  path_to_distance, a_star_one_target
 from algorithms.multi_target import a_star_multi_target
+
+from utils.path_utils import path_id_to_points, multi_point_path, path_to_points
 # from algorithms.A_star import a_star, path_to_distance, a_star_one_target, path_to_points
 from utils.search import search_type, search
+
+
+from copy import deepcopy
 import os 
 
 # mazes = [
@@ -32,8 +37,22 @@ for i in search_type:
         print('search type is: ',i)
         s = search(i, maze_map)
         path = s.get_path()
+        
+        # _path_copy = deepcopy(path)
+        # path_nodes_ids = multi_point_path(_path_copy)
+        
+        
+        # try:
+        #     points = path_id_to_points(maze_map, path_nodes_ids)
+        # except:
+        #     points =[0]
         # print(f"path saved in sol/{search_type_name}/{mazes[j]}")
         cost = s.get_cost()
+        # cost = 0
+        # print(cost)
+        # print(len(points)-1)
+        # print(cost == len(points))
+            
         # print(f"cost saved in sol/{search_type_name}/{mazes[j]}")
         expansion = s.get_expansion()
         # print(f"expansion saved in sol/{search_type_name}/{mazes[j]}")
@@ -54,12 +73,12 @@ for i in search_type:
         print(f"saved sol/{search_type_name}/{mazes[j]}")
 
 
-def multi_point_path(targets_dict):
-    path = []
-    for key in targets_dict:
-        path += targets_dict[key][:-1]
+# def multi_point_path(targets_dict):
+#     path = []
+#     for key in targets_dict:
+#         path += targets_dict[key][:-1]
 
-    return path
+#     return path
 
 # maze_map = Maze_map(f'Maze/{mazes[-2]}')
 
