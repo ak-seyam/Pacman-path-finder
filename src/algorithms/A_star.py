@@ -108,12 +108,3 @@ def path_to_distance(list_nodes):
     for i in range(1, len(list_nodes)):
         distance += list_nodes[i-1].distance(list_nodes[i])
     return distance
-
-def path_to_points(list_nodes) -> List[Map_point]:
-    ''' get detaialed route as map_points for the path'''
-    route = []
-    for i in range(1, len(list_nodes)):
-        last_node = list_nodes[i-1]
-        current_node = list_nodes[i]
-        route += last_node.connected_nodes_route()[current_node.id]
-    return route
