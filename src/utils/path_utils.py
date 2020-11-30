@@ -40,6 +40,12 @@ def path_to_distance(list_nodes):
     return distance
 
 
+def path_id_to_points(maze_map, list_node_ids):
+    list_nodes = [maze_map.graph.nodes[id_] for id_ in list_node_ids]
+    return path_to_points(list_nodes)
+
+
+
 def path_to_points(list_nodes) -> List[Map_point]:
     ''' get detaialed route as map_points for the path'''
     route = []

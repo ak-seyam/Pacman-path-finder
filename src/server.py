@@ -6,6 +6,7 @@ import json
 import dataclasses
 import pickle
 
+from utils.path_utils import path_id_to_points
 from algorithms.A_star import path_to_distance, a_star_one_target,path_to_points
 from algorithms.DFS import dfs_single_target
 from algorithms.BFS_sovler import BFS_Solver
@@ -14,6 +15,7 @@ from algorithms.GFS import GFS
 from algorithms.GFS_Solver import GFS_Solver
 from utils.informed_multi_target_solver import informed_multi_target_solver
 from algorithms.multi_target import a_star_multi_target
+from utils.search import search_type, search
 
 
 from enum import Enum
@@ -56,14 +58,15 @@ def map(maze_num):
                        "width": width},
                       cls=EnhancedJSONEncoder)
     
-# @app.route("/map/path")
-# def map_path():
-    # from_node_id = int(request.args.get('from'))
-    # to_node_id = request.args.get('to_node')
-    # from_node = maze.graph.get_node_by_id(from_node_id)
 
-    # to_node = maze.graph.get_node_by_id(to_node_id)
-    # return json.dumps(from_node.map_point.route_to_node_points(), cls=EnhancedJSONEncoder)
+@app.route("/map/<int:maze_num>/path")
+def map_path(maze_num):
+    from_node_id = int(request.args.get('from'))
+    to_node_id = request.args.get('to_node')
+    from_node = mazes[maze_num].graph.get_node_by_id(from_node_id)
+
+    to_node = mazes[maze_num].graph.get_node_by_id(to_node_id)
+    return json.dumps(from_node.map_point.route_to_node_points(), cls=EnhancedJSONEncoder)
 
 
 @app.route("/map/<int:maze_num>/sol/a_star")
@@ -132,7 +135,7 @@ def map_sol_gfs(maze_num):
     points = path_to_points(path)
     return json.dumps({"points": points, "cost": distance}, cls=EnhancedJSONEncoder)
 
-
+# TODO import from path utils
 def multi_point_path(targets_dict):
     path = []
     for key in targets_dict:
@@ -152,6 +155,7 @@ def map_sol_multi(maze_num):
         GFS, graph, starting_point, maze_map, sol.solve, sol.steps_counter)
 
     targets_dict = sol.get_path()
+    # targets_dict.keys()
 
     targets_ordered = list(targets_dict.keys())
 
@@ -190,6 +194,54 @@ def map_sol_multi_a_star(maze_num):
     return json.dumps({"points": targets_dict, "order": targets_ordered, "cost": distance}, cls=EnhancedJSONEncoder)
 
 
+@app.route("/map/<int:maze_num>/sol/single/")
+def generic_solver_single(maze_num):    
+    maze_map = mazes[maze_num]
+    selected_type = request.args.get('search_type')
+    # change string to enum
+    selected_type = search_type.A_Star if selected_type == "a_star" else selected_type
+    selected_type = search_type.DFS if selected_type == "dfs" else selected_type
+    selected_type = search_type.BFS if selected_type == "bfs" else selected_type
+    selected_type = search_type.GFS if selected_type == "gfs" else selected_type
+
+    s = search(selected_type, maze_map)
+
+    path = list(s.get_path().values())[0]
+    distance = s.get_cost()
+    points = path_id_to_points(maze_map, path)
+    print(path)
+    # distance = path_to_distance(path)
+    return json.dumps({"points": points, "cost": distance}, cls=EnhancedJSONEncoder)
+
+
+@app.route("/map/<int:maze_num>/sol/multi/")
+def generic_solver_multi(maze_num):
+    maze_map = mazes[maze_num]
+    selected_type = request.args.get('search_type')
+    # change string to enum
+    selected_type = search_type.A_Star if selected_type == "a_star" else selected_type
+    selected_type = search_type.DFS if selected_type == "dfs" else selected_type
+    selected_type = search_type.BFS if selected_type == "bfs" else selected_type
+    selected_type = search_type.GFS if selected_type == "gfs" else selected_type
+
+    s = search(selected_type, maze_map)
+
+    targets_dict = s.get_path()
+    distance = s.get_cost()
+    targets_ordered = list(targets_dict.keys())
+    path = multi_point_path(targets_dict)
+    
+    # points = path_id_to_points(maze_map, path)
+
+    for k in targets_dict.keys():
+        path_ids = targets_dict[k]
+        path = [maze_map.graph.nodes[id_] for id_ in path_ids]
+        points = path_to_points(path)
+        targets_dict[k] = points
+
+
+
+    return json.dumps({"points": targets_dict, "order": targets_ordered, "cost": distance}, cls=EnhancedJSONEncoder)
 
 
 # NOTE for map visit /index.html

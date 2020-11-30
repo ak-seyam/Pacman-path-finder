@@ -65,24 +65,7 @@ const element_types = {
 //   draw_map(map_data,options)
 //   const [step_x, step_y] = step_map(map_data);
 
-//   async function draw_routes(node_id,last_draw) {
-//     const res = await fetch(`http://127.0.0.1:5000/map/path?from=${node_id}`);
 
-//     const routes = await res.json();
-//     for (node_id in routes) {
-//       let element = element_types.TRAGET;
-//       if (parseInt(node_id) === last_draw){
-//         element = element_types.PLAYER
-//       }
-//       const route = routes[node_id];
-//       route.forEach((point) => {
-//         const x = point.location.x * step_x
-//         const y = point.location.y * step_y
-//         draw_map_element(x,y,step_x,step_y,element,ctx)
-//     })
-
-//       };
-//     }
 
 //   for (let i = 0; i < test_expantion.length; i++) {
 //     const p = get_point_by_node_id(map_data,test_expantion[i])
@@ -102,6 +85,46 @@ const element_types = {
 //   })
 
 // });
+
+async function draw_routes(node_id, last_draw) {
+  const res = await fetch(`http://127.0.0.1:5000/map/path?from=${node_id}`);
+
+  const routes = await res.json();
+  for (node_id in routes) {
+    let element = element_types.TRAGET;
+    if (parseInt(node_id) === last_draw) {
+      element = element_types.PLAYER;
+    }
+    const route = routes[node_id];
+    route.forEach((point) => {
+      const x = point.location.x ;
+      const y = point.location.y ;
+      draw_map_element(x, y, step_x, step_y, element, ctx);
+    });
+  }
+}
+
+
+function draw_expantion(map_data, expantion, canv) {
+  for (let i = 0; i < expantion.length; i++) {
+    const p = get_point_by_node_id(map_data, expantion[i]);
+    const x = p.location.x;
+    const y = p.location.y;
+    let last_draw = NaN;
+    if (i > 0) last_draw = expantion[i - 1];
+    setTimeout(async () => {
+      draw_map_element(x, y, step_x, step_y, element_types.PLAYER, canv);
+      await draw_routes(expantion[i], last_draw);
+      // TODO delete the route after time
+    }, 800 * i);
+  }
+  expantion.forEach(async (node_id) => {});
+}
+
+
+
+
+
 
 function get_point_by_node_id(maze_map, node_id) {
   const points = maze_map.map;
@@ -182,6 +205,38 @@ function draw() {
 // }
 
 
+async function draw_path_multi_single(multi, map_id, selected_sol, canv) {
+  if (multi) {
+    var sol_data = await fetch(
+      `http://127.0.0.1:5000/map/${map_id}/sol/multi/?search_type=${selected_sol}`
+    ).then((res) => res.json());
+
+    const points_routes = sol_data.points;
+    const order = sol_data.order;
+
+    // update cost
+    const cost = sol_data.cost;
+    document.getElementById("distance_cost").innerHTML = "cost: " + cost;
+
+    for (let i = 0; i < order.length; i++) {
+      const path_points = points_routes[order[i]];
+
+      setTimeout(() => {
+        draw_path(path_points, canv, getRandomColor());
+      }, 1000 * i);
+    }
+  } else {
+    var sol_data = await fetch(
+      `http://127.0.0.1:5000/map/${map_id}/sol/single/?search_type=${selected_sol}`
+    ).then((res) => res.json());
+    const points = sol_data.points;
+    const cost = sol_data.cost;
+    document.getElementById("distance_cost").innerHTML = "cost: " + cost;
+    draw_path(points, canv);
+  }
+}
+
+
 async function main() {
   const selector = document.getElementById("map_selector");
   const map_id = selector[selector.selectedIndex].value;
@@ -222,37 +277,8 @@ async function main() {
       multi = true;
     }
   }
-  
-  
-  
-  if (multi) {
-    var sol_data = await fetch(
-      `http://127.0.0.1:5000/map/${map_id}/sol/multi/${selected_sol}`
-    ).then((res) => res.json());
+  draw_path_multi_single(multi, map_id, selected_sol, ctx_path);
 
-    const points_routes = sol_data.points;
-    const order = sol_data.order;
-    
-    // update cost
-    const cost = sol_data.cost;
-    document.getElementById("distance_cost").innerHTML = "cost: " + cost;
-    
-    for (let i = 0; i < order.length; i++) {
-      const path_points = points_routes[order[i]];
-      
-      setTimeout(() => {
-        draw_path(path_points, ctx_path, getRandomColor());
-      }, 1000 * i);
-    }
-  } else {
-    var sol_data = await fetch(
-      `http://127.0.0.1:5000/map/${map_id}/sol/${selected_sol}`
-    ).then((res) => res.json());
-    const points = sol_data.points;
-    const cost = sol_data.cost;
-    document.getElementById("distance_cost").innerHTML = "cost: " + cost;
-    draw_path(points, ctx_path);
-  }
 }
 
 const map_selector = document.getElementById("map_selector");
