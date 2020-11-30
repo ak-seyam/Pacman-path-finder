@@ -86,9 +86,9 @@ def a_star_one_target_path_visited(start_node, end_node):
 
 def parent_list_to_path(node_parent,node):
     path = [node]
-    while node:
+    while node is not None:
         parent = node_parent.get(node,(None,None))
-        if parent:
+        if parent is not None:
             path.append(parent)
         node = parent
     
