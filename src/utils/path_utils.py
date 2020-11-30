@@ -2,12 +2,24 @@ from typing import List
 from models import Graph, Maze_map, Map_point, Map_el, Location
 
 
+# def multi_point_path(targets_dict):
+#     path = []
+#     for key in targets_dict:
+#         path += targets_dict[key][:-1]
+
+#     return path
+
 
 def multi_point_path(targets_dict):
-    path = []
-    for key in targets_dict:
+    keys = list(targets_dict.keys())
+    # for first point don't reomve end repeate
+    path = targets_dict[keys[0]]
+
+    for i in range(1,len(keys)):
+        key = keys[i]
         path += targets_dict[key][:-1]
 
+    # TODO solve for last point
     return path
 
 
@@ -48,9 +60,12 @@ def path_id_to_points(maze_map, list_node_ids):
 
 def path_to_points(list_nodes) -> List[Map_point]:
     ''' get detaialed route as map_points for the path'''
-    route = []
+    route = [list_nodes[0].map_point]
     for i in range(1, len(list_nodes)):
         last_node = list_nodes[i-1]
         current_node = list_nodes[i]
         route += last_node.connected_nodes_route()[current_node.id]
+        # add current node point
+        route += [current_node.map_point]
+
     return route
