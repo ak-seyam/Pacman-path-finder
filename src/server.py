@@ -6,8 +6,8 @@ import json
 import dataclasses
 import pickle
 
-from utils.path_utils import path_id_to_points
-from algorithms.A_star import path_to_distance, a_star_one_target,path_to_points
+from utils.path_utils import path_id_to_points, path_to_points
+from algorithms.A_star import path_to_distance, a_star_one_target
 from algorithms.DFS import dfs_single_target
 from algorithms.BFS_sovler import BFS_Solver
 from algorithms.BFS import BFS
@@ -129,7 +129,6 @@ def map_sol_gfs(maze_num):
     path_dict = sol.get_path()
     
     path_ids = path_dict[next(iter(path_dict))]
-    print(path_ids)
     path = [maze_map.graph.nodes[id_] for id_ in path_ids]
     distance = path_to_distance(path)
     points = path_to_points(path)
