@@ -10,7 +10,7 @@ from algorithms.A_star import  path_to_distance, a_star_one_target, path_to_poin
 from algorithms.multi_target import a_star_multi_target
 # from algorithms.A_star import a_star, path_to_distance, a_star_one_target, path_to_points
 from utils.search import search_type, search
-
+import os 
 
 # mazes = [
 #     'bigDots.txt', 'bigMaze.txt', 'mediumMaze.txt', 'mediumSearch.txt', 'openMaze.txt', 'smallSearch.txt', 'tinySearch.txt']
@@ -23,14 +23,35 @@ for i in search_type:
     for j in range(7):
         if j > 2 and i == search_type.DFS:
             break
-        maze_map = Maze_map(f'Maze/{mazes[j]}')
-        print("Testing...")
+        maze_name = mazes[j]
+        maze_map = Maze_map(f'Maze/{maze_name}')
+
+        search_type_name = i.name
+
+        # print("Testing...")
         print('search type is: ',i)
         s = search(i, maze_map)
-        print(s.get_path())
-        print(s.get_cost())
-        print(s.get_expansion())
-        print(s.get_number_of_expanded_nodes())
+        path = s.get_path()
+        # print(f"path saved in sol/{search_type_name}/{mazes[j]}")
+        cost = s.get_cost()
+        # print(f"cost saved in sol/{search_type_name}/{mazes[j]}")
+        expansion = s.get_expansion()
+        # print(f"expansion saved in sol/{search_type_name}/{mazes[j]}")
+        number_of_expanded_nodes = s.get_number_of_expanded_nodes()
+        # print(
+            # f"number_of_expanded_nodes saved in sol/{search_type_name}/{mazes[j]}")
+
+        if not os.path.exists(f'sol/{search_type_name}'):
+            os.makedirs(f'sol/{search_type_name}')
+        
+        with open(f'sol/{search_type_name}/{mazes[j]}', 'w') as sol_file:
+                # sol_file.write(str(maze_map))
+            sol_file.write('path = ' + str(path) + '\n')
+            sol_file.write('cost = ' + str(cost) + '\n')
+            sol_file.write('expansion = ' + str(expansion) + '\n')
+            sol_file.write('number_of_expanded_nodes = ' + str(number_of_expanded_nodes) + '\n')
+                
+        print(f"saved sol/{search_type_name}/{mazes[j]}")
 
 
 def multi_point_path(targets_dict):
