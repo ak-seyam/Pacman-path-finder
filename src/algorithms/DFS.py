@@ -70,8 +70,6 @@ def dfs_generic(starting_node_id, traget_locator: Callable, adjacency_dict):
         node_id = nodes_stack.pop(-1)  # remove the last element, LIFO
 
         if node_id not in visited_nodes:
-            if node_id == 200:
-                x=1
             visited_nodes.append(node_id)
             
             # find the target
