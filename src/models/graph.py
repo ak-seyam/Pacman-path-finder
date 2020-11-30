@@ -24,7 +24,7 @@ class Node(object):
                 yield edge.node_to
 
     def connected_nodes_route(self) -> Dict[int, List[Map_point]]:
-        ''' get points betwean node and its frontiers 
+        ''' get points betwean nodes and its frontiers inclusize of the node itself and frontiers
         returns:
             dictonary : [key : int the node id, value :List[Map_point]]
         '''
@@ -36,7 +36,7 @@ class Node(object):
                 if next_point:
                     n = next_point.node_id
                     if n is not None:
-                        nodes_route[n] = route
+                        nodes_route[n] = route[:-1]
 
         return nodes_route
 
