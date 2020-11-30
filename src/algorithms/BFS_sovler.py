@@ -9,7 +9,7 @@ class BFS_Solver():
         self.starting_point = start_point  # where i'm going to stop from the next target
         self.maze_map = maze_map
         self.graph = graph
-        self._res = {self.starting_point: [self.starting_point]}
+        self._res = {self.starting_point: [self.starting_point]} # _res is all the visited nodes
         self.res = {}
         self.num_hits = 0
         self.expansion = []
@@ -31,6 +31,7 @@ class BFS_Solver():
                 self._res[point] = self._res[parent] + [point]
 
     def get_all_points_pathes(self):
+        # get all the traversed points including the one non participating in the result
         return self._res
 
     def get_result(self):
@@ -54,6 +55,13 @@ class BFS_Solver():
                         break
             prev_key = key
         return self.res
+
+    def clean(self):
+        self._res = {} # clean all nodes
+        self.res = {} # clean result
+        self.num_hits = 0 # zeroing number of hits
+        self.expansion = [] # cleaning expansion
+
 
     def steps_counter(self):
         self.num_hits += 1

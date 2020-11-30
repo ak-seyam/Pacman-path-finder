@@ -1,5 +1,5 @@
 from utils.prepare_targets import prepare_targets
-from algorithms.A_star import parent_list_distance_to_path, path_to_distance, a_star_one_target_path_only
+from algorithms.A_star import parent_list_distance_to_path, path_to_distance, a_star_one_target_path_only, a_star_one_target_path_visited
 from models import TargetNode
 from typing import List
 
@@ -114,20 +114,23 @@ def a_star_multi_target(maze_map, starting_node_id):
 
     return targets_to_nodes(maze_map, path_node_id, starting_node_id)
 
+#TODO import from path_utils
 def targets_to_nodes(maze_map,targets_id: List[int],start_node_id):
     ''' find the path betwean target nodes with a_star'''
     path_dict = {}
     targets_id.reverse()
-    
+    visited_nodes = []
     for i in range(1, len(targets_id)):
         start_node = maze_map.graph.nodes[targets_id[i-1]]
         end_node = maze_map.graph.nodes[targets_id[i]]
-        path = a_star_one_target_path_only(start_node, end_node)
+        path, visited = a_star_one_target_path_visited(start_node, end_node)
         path = [n.id for n in path]
         path.reverse()
         path_dict[targets_id[i]] = path
+        visited_nodes+=visited
     
-    return path_dict
+    visited_ids = [n.id for n in visited_nodes]
+    return path_dict, visited_ids
 
 
 

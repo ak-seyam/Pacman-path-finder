@@ -8,10 +8,29 @@ from utils.informed_multi_target_solver import informed_multi_target_solver
 from utils.prepare_targets import prepare_targets
 from algorithms.A_star import  path_to_distance, a_star_one_target, path_to_points
 from algorithms.multi_target import a_star_multi_target
+# from algorithms.A_star import a_star, path_to_distance, a_star_one_target, path_to_points
+from utils.search import search_type, search
 
+
+# mazes = [
+#     'bigDots.txt', 'bigMaze.txt', 'mediumMaze.txt', 'mediumSearch.txt', 'openMaze.txt', 'smallSearch.txt', 'tinySearch.txt']
 
 mazes = [
-    'bigDots.txt', 'bigMaze.txt', 'mediumMaze.txt', 'mediumSearch.txt', 'openMaze.txt', 'smallSearch.txt', 'tinySearch.txt']
+    'bigMaze.txt', 'mediumMaze.txt', 'openMaze.txt', 'bigDots.txt','mediumSearch.txt', 'smallSearch.txt', 'tinySearch.txt']
+
+# NOTE testing common search logic
+for i in search_type:
+    for j in range(7):
+        if j > 2 and i == search_type.DFS:
+            break
+        maze_map = Maze_map(f'Maze/{mazes[j]}')
+        print("Testing...")
+        print('search type is: ',i)
+        s = search(i, maze_map)
+        print(s.get_path())
+        print(s.get_cost())
+        print(s.get_expansion())
+        print(s.get_number_of_expanded_nodes())
 
 
 def multi_point_path(targets_dict):
@@ -33,7 +52,7 @@ def multi_point_path(targets_dict):
 
 # print(maze_map)
 
-# GFS solver
+# # GFS solver
 # graph = maze_map.graph
 # sol = GFS_Solver(graph, starting_point)
 # informed_multi_target_solver(
