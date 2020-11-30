@@ -250,7 +250,7 @@ async function main() {
   const options = {
   draw_wall: true,
   draw_target: true,
-  draw_player: true,
+  draw_player: false,
   draw_ids: false,
   
   };
