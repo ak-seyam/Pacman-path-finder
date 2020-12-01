@@ -86,8 +86,8 @@ const element_types = {
 
 // });
 
-async function draw_routes(node_id, last_draw) {
-  const res = await fetch(`http://127.0.0.1:5000/map/path?from=${node_id}`);
+async function draw_routes(node_id, last_draw,map_id,canv) {
+  const res = await fetch(`http://127.0.0.1:5000/map/${map_id}/path?from=${node_id}`);
 
   const routes = await res.json();
   for (node_id in routes) {
@@ -99,13 +99,15 @@ async function draw_routes(node_id, last_draw) {
     route.forEach((point) => {
       const x = point.location.x ;
       const y = point.location.y ;
-      draw_map_element(x, y, step_x, step_y, element, ctx);
+      draw_map_element(x, y, step_x, step_y, element, canv);
     });
   }
 }
 
 
-function draw_expantion(map_data, expantion, canv) {
+async function draw_expantion(map_data, search_type,map_id, canv) {
+  let data = await fetch(`/map/${map_id}/expand/?search_type=${search_type}`).then((res) => res.json());
+  const expantion = data.expantion
   for (let i = 0; i < expantion.length; i++) {
     const p = get_point_by_node_id(map_data, expantion[i]);
     const x = p.location.x;
@@ -114,7 +116,7 @@ function draw_expantion(map_data, expantion, canv) {
     if (i > 0) last_draw = expantion[i - 1];
     setTimeout(async () => {
       draw_map_element(x, y, step_x, step_y, element_types.PLAYER, canv);
-      await draw_routes(expantion[i], last_draw);
+      await draw_routes(expantion[i], last_draw, map_id, canv);
       // TODO delete the route after time
     }, 800 * i);
   }
@@ -265,29 +267,44 @@ async function main() {
   
 
 
-  // TODO support solution type
+
   const sol_selector = document.getElementById("sloution_method");
   const selected_sol = sol_selector[sol_selector.selectedIndex].value;
   
-  let multi = false
-  
-  const multi_maps = [3,5,6,0]
-  for (let val in multi_maps) {
-    if (map_id == multi_maps[val]) {
-      multi = true;
-    }
+  const path_expand_selector = document.getElementById("path_expand");
+  const selected_draw = path_expand_selector[path_expand_selector.selectedIndex].value;
+  if (selected_draw == "path"){    
+      let multi = false
+      
+      const multi_maps = [3,5,6,0]
+      for (let val in multi_maps) {
+        if (map_id == multi_maps[val]) {
+          multi = true;
+        }
+      }
+      draw_path_multi_single(multi, map_id, selected_sol, ctx_path);
   }
-  draw_path_multi_single(multi, map_id, selected_sol, ctx_path);
+
+  else {
+    draw_expantion(map_data,selected_sol,map_id, ctx_path);
+  }
 
 }
 
 const map_selector = document.getElementById("map_selector");
 const sol_selector = document.getElementById("sloution_method");
+const path_expand_selector = document.getElementById("path_expand");
+
 
 map_selector.addEventListener("change", () => {
   main();
 });
+
 sol_selector.addEventListener("change", () => {
+  main();
+})
+
+path_expand_selector.addEventListener("change", () => {
   main();
 })
 

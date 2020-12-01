@@ -6,7 +6,7 @@ import json
 import dataclasses
 import pickle
 
-from utils.path_utils import path_id_to_points, path_to_points
+from utils.path_utils import path_id_to_points, path_to_points, multi_point_path
 from algorithms.A_star import path_to_distance, a_star_one_target
 from algorithms.DFS import dfs_single_target
 from algorithms.BFS_sovler import BFS_Solver
@@ -134,13 +134,13 @@ def map_sol_gfs(maze_num):
     points = path_to_points(path)
     return json.dumps({"points": points, "cost": distance}, cls=EnhancedJSONEncoder)
 
-# TODO import from path utils
-def multi_point_path(targets_dict):
-    path = []
-    for key in targets_dict:
-        path += targets_dict[key][:-1]
+# # TODO import from path utils
+# def multi_point_path(targets_dict):
+#     path = []
+#     for key in targets_dict:
+#         path += targets_dict[key][:-1]
 
-    return path
+#     return path
 
 
 
@@ -208,9 +208,29 @@ def generic_solver_single(maze_num):
     path = list(s.get_path().values())[0]
     distance = s.get_cost()
     points = path_id_to_points(maze_map, path)
-    print(path)
+    # print(path)
     # distance = path_to_distance(path)
     return json.dumps({"points": points, "cost": distance}, cls=EnhancedJSONEncoder)
+
+@app.route("/map/<int:maze_num>/expand/")
+def epander_solver(maze_num):    
+    maze_map = mazes[maze_num]
+    selected_type = request.args.get('search_type')
+    # change string to enum
+    selected_type = search_type.A_Star if selected_type == "a_star" else selected_type
+    selected_type = search_type.DFS if selected_type == "dfs" else selected_type
+    selected_type = search_type.BFS if selected_type == "bfs" else selected_type
+    selected_type = search_type.GFS if selected_type == "gfs" else selected_type
+
+    s = search(selected_type, maze_map)
+
+    expantion = s.get_expansion()
+    distance = s.get_cost()
+    # points = path_id_to_points(maze_map, path)
+    # print(path)
+    # distance = path_to_distance(path)
+    return json.dumps({"expantion": expantion, "cost": distance}, cls=EnhancedJSONEncoder)
+
 
 
 @app.route("/map/<int:maze_num>/sol/multi/")

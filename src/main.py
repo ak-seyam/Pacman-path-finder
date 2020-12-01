@@ -38,19 +38,19 @@ for i in search_type:
         s = search(i, maze_map)
         path = s.get_path()
         
-        # _path_copy = deepcopy(path)
-        # path_nodes_ids = multi_point_path(_path_copy)
+        _path_copy = deepcopy(path)
+        path_nodes_ids = multi_point_path(_path_copy)
         
         
-        # try:
-        #     points = path_id_to_points(maze_map, path_nodes_ids)
-        # except:
-        #     points =[0]
+        try:
+            points = path_id_to_points(maze_map, path_nodes_ids)
+        except:
+            points =[0]
         # print(f"path saved in sol/{search_type_name}/{mazes[j]}")
         cost = s.get_cost()
         # cost = 0
-        # print(cost)
-        # print(len(points)-1)
+        print(cost)
+        print(len(points)-1)
         # print(cost == len(points))
             
         # print(f"cost saved in sol/{search_type_name}/{mazes[j]}")
@@ -66,6 +66,7 @@ for i in search_type:
         with open(f'sol/{search_type_name}/{mazes[j]}', 'w') as sol_file:
                 # sol_file.write(str(maze_map))
             sol_file.write('path = ' + str(path) + '\n')
+            sol_file.write('path_nodes' + str(path_nodes_ids)+ '\n')
             sol_file.write('cost = ' + str(cost) + '\n')
             sol_file.write('expansion = ' + str(expansion) + '\n')
             sol_file.write('number_of_expanded_nodes = ' + str(number_of_expanded_nodes) + '\n')
