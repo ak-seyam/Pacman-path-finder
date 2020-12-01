@@ -13,12 +13,13 @@ from models import Graph, Maze_map, Map_point, Map_el, Location
 def multi_point_path(targets_dict):
     keys = list(targets_dict.keys())
     # for first point don't reomve end repeate
-    path = targets_dict[keys[0]]
+    path = []
 
-    for i in range(1,len(keys)):
+    for i in range(len(keys)-1):
         key = keys[i]
         path += targets_dict[key][:-1]
 
+    path += targets_dict[keys[-1]]
     # TODO solve for last point
     return path
 
